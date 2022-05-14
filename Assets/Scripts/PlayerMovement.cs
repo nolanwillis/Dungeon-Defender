@@ -87,8 +87,6 @@ public class PlayerMovement : MonoBehaviour
             {
                 rb.AddForce(fallForceMultiplier * Vector3.down);
             }
-            
-            
         }
     }
 
