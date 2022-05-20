@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
+    // Max health player can have
     public int playerMaxHealth = 100;
+    // Current player health
     public int playerHealth;
-
-    [SerializeField] private HealthBar healthBar;
-
+    // Reference to Health Bar component of the HealthBar GameObject
+    public HealthBar healthBar;
     private void Start()
     {
         playerHealth = playerMaxHealth;
@@ -20,6 +21,13 @@ public class PlayerHealth : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.H))
         {
             applyDamage(10);
+        }
+
+        // Checks player health
+        if (playerHealth <= 0)
+        {
+            Destroy(gameObject);
+            LevelManager.instance.spawn();
         }
     }
 

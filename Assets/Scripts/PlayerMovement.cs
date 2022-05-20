@@ -44,11 +44,12 @@ public class PlayerMovement : MonoBehaviour
     // Collision Functions
     void OnCollisionStay(Collision collision)
     {
-        if (collision.gameObject.tag == "Ground")
+        if (collision.gameObject.tag == "Ground" && rb.velocity.y == 0)
         {
             isGrounded = true;
         }
     }
+   
     void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.tag == "Ground")
@@ -108,7 +109,7 @@ public class PlayerMovement : MonoBehaviour
             jumpLastPressedTime = Time.time;
         }
         if (Time.time - jumpLastPressedTime <= jumpBufferTime && 
-            Time.time - lastGroundedTime <= jumpBufferTime && coyoteTimeCounter > 0.0f)
+            Time.time - lastGroundedTime <= jumpBufferTime && coyoteTimeCounter > 0.0f && rb.velocity.y <= 0)
         {
             Jump();
             coyoteTimeCounter = 0.0f;
