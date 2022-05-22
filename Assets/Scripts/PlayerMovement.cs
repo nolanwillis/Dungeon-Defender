@@ -20,6 +20,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpBufferTime = 0.2f;
     // Gravity value
     [SerializeField] private float fallForceMultiplier = 20.0f;
+    // Turn smooth speed
+    [SerializeField] private float turnSmoothSpeed = .4f;
     // Coyote time counter
     private float coyoteTimeCounter = 0;
     // Last time on ground
@@ -76,6 +78,10 @@ public class PlayerMovement : MonoBehaviour
             float movement = Mathf.Abs(speedDif) * accRate * Mathf.Sign(speedDif);
             // Apply lateral force to the players Rigidbody component
             rb.AddForce(movement * Vector3.right);
+
+            // Rotate player to face correct direction
+            Quaternion movDir = Quaternion.Euler(0.0f, moveInput * 90.0f, 0.0f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, movDir, turnSmoothSpeed);
 
             // In Air Control Dampening
             if (!isGrounded &&  (rb.velocity.x <= -0.01f || rb.velocity.x >= 0.01f))

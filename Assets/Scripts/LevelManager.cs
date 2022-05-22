@@ -42,7 +42,7 @@ public class LevelManager : MonoBehaviour
     public void spawn()
     {
         // Instatiate player into the game
-        GameObject player = Instantiate(playerPrefab, spawnPoint.position, spawnPoint.rotation);
+        GameObject player = Instantiate(playerPrefab, spawnPoint.position, playerPrefab.transform.rotation);
         // Set Player Health component Health Bar to healthbar gameobject
         ph = player.GetComponent<PlayerHealth>();
         ph.healthBar = hb;
