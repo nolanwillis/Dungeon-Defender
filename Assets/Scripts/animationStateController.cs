@@ -10,6 +10,8 @@ public class animationStateController : MonoBehaviour
     private int jumpHash;
     private int crouchHash;
     private int attackHash;
+    private int blockHash;
+    private int castHash;
     private float velocity = 0.0f;
     private Rigidbody rb;
 
@@ -21,6 +23,8 @@ public class animationStateController : MonoBehaviour
         jumpHash = Animator.StringToHash("Jump");
         crouchHash = Animator.StringToHash("Crouch");
         attackHash = Animator.StringToHash("Attack");
+        blockHash = Animator.StringToHash("Block");
+        castHash = Animator.StringToHash("Cast");
         rb = GetComponent<Rigidbody>();
     }
 
@@ -32,12 +36,12 @@ public class animationStateController : MonoBehaviour
         velocity = Math.Abs(rb.velocity.x);
         animController.SetFloat(velocityHash, velocity);
 
-        // Set jump to true if player hits space
+        // Input
+        // Trigger jump if player hits space
         if (Input.GetKeyDown(KeyCode.Space))
         {
             animController.SetTrigger(jumpHash);
         }
-
         // Set crouch to true if player hits c
         if (Input.GetKey("c"))
         {
@@ -48,13 +52,27 @@ public class animationStateController : MonoBehaviour
             animController.SetBool(crouchHash, false);
         }
 
-        // Set attack to true if player hits left click
+        // Trigger attack if player hits left click
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             animController.SetTrigger(attackHash);
         }
-        
+
+        // Set block to true if player hits right click
+        if (Input.GetKey(KeyCode.Mouse1))
+        {
+            animController.SetBool(blockHash, true);
+        }
+        else
+        {
+            animController.SetBool(blockHash, false);
+        }
+
+        // Trigger cast if player hits w
+        if (Input.GetKeyDown("w"))
+        {
+            animController.SetTrigger(castHash);
+        }
+
     }
 }
-
-// run, jump, crouch2, slash

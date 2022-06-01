@@ -21,7 +21,9 @@ public class PlayerMovement : MonoBehaviour
     // Gravity value
     [SerializeField] private float fallForceMultiplier = 20.0f;
     // Turn smooth speed
-    [SerializeField] private float turnSmoothSpeed = .4f;
+    [SerializeField] private float turnSmoothSpeed = 2.1f;
+    // Default player rotation
+    private Quaternion defaultPRot = Quaternion.Euler(0.0f, 90.0f, 0.0f);
     // Coyote time counter
     private float coyoteTimeCounter = 0;
     // Last time on ground
@@ -41,6 +43,7 @@ public class PlayerMovement : MonoBehaviour
         // Set component references
         rb = GetComponent<Rigidbody>();
         cc = GetComponent<CapsuleCollider>();
+        transform.rotation = defaultPRot;
     }
 
     // Collision Functions
@@ -79,10 +82,15 @@ public class PlayerMovement : MonoBehaviour
             // Apply lateral force to the players Rigidbody component
             rb.AddForce(movement * Vector3.right);
 
-            // Rotate player to face correct direction
-            Quaternion movDir = Quaternion.Euler(0.0f, moveInput * 90.0f, 0.0f);
-            transform.rotation = Quaternion.Slerp(transform.rotation, movDir, turnSmoothSpeed);
 
+            if (Input.GetKey("d") || Input.GetKey("a"))
+            {
+                Quaternion movDir = Quaternion.Euler(0.0f, Mathf.Sign(moveInput) * 90.0f, 0.0f);
+                transform.rotation = Quaternion.Slerp(transform.rotation, movDir, turnSmoothSpeed);
+            }
+           
+            
+            
             // In Air Control Dampening
             if (!isGrounded &&  (rb.velocity.x <= -0.01f || rb.velocity.x >= 0.01f))
             {

@@ -11,11 +11,13 @@ public class LevelManager : MonoBehaviour
     // GameObject references
     private GameObject mainCamera;
     private GameObject healthBar;
+    private GameObject attackPoint;
 
     // Component references
     private CameraFollow cf;
     private PlayerHealth ph;
     private HealthBar hb;
+    private Combat cb;
    
     // Location of spawn point
     public Transform spawnPoint;
@@ -31,9 +33,10 @@ public class LevelManager : MonoBehaviour
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
         healthBar = GameObject.Find("HealthBar");
         
-        // Set Camera Follow component reference
+        // Set reference for main camera and health bar
         cf = mainCamera.GetComponent<CameraFollow>();
         hb = healthBar.GetComponent<HealthBar>();
+       
         // Spawn player
         spawn();
     }
@@ -43,11 +46,26 @@ public class LevelManager : MonoBehaviour
     {
         // Instatiate player into the game
         GameObject player = Instantiate(playerPrefab, spawnPoint.position, playerPrefab.transform.rotation);
-        // Set Player Health component Health Bar to healthbar gameobject
+        // Set reference to required gameObjects attached to player
+        attackPoint = GameObject.Find("AttackPoint");
+        // Set references to required components of the player
         ph = player.GetComponent<PlayerHealth>();
-        ph.healthBar = hb;
-        // Set camera Camera Follow component Target to player transform
-        cf.target = player.transform; 
+        cb = player.GetComponent<Combat>();
+        // Set Player Health component Health Bar to healthbar gameobject
+        if (hb != null)
+        {
+            ph.healthBar = hb;
+        }
+        // Set Camera Camera Follow component Target to player transform
+        if (player != null)
+        {
+            cf.target = player.transform;
+        }
+        // Set Combat component Attack Point to the attackPoint gameobject transform
+        if (attackPoint != null)
+        {
+            cb.attackPoint = attackPoint.transform;
+        }
 
     }
 
