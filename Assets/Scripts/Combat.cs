@@ -5,7 +5,7 @@ using UnityEngine;
 public class Combat : MonoBehaviour
 {
     private float attackRange = .5f;
-    [SerializeField] private LayerMask enemyLayer;
+    public LayerMask enemyLayer;
     public Transform attackPoint;
 
     // Update is called once per frame
@@ -14,21 +14,22 @@ public class Combat : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             attackRange = .5f;
-            Attack();
+            Attack(10);
         }
         if (Input.GetKeyDown("w"))
         {
             attackRange = 2.0f;
-            Attack();
+            Attack(25);
         }
     }
 
-    void Attack()
+    void Attack(int damage)
     {
         Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayer);
         foreach(Collider enemy in hitEnemies)
         {
             Debug.Log("Hit: " + enemy.name);
+            enemy.GetComponent<PlayerHealth>().applyDamage(damage);
         }
     }
 
