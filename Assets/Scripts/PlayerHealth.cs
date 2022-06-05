@@ -26,8 +26,15 @@ public class PlayerHealth : MonoBehaviour
         // Checks player health
         if (playerHealth <= 0)
         {
-            Destroy(gameObject);
-            LevelManager.instance.spawnPlayer();
+            if (gameObject.tag == "Player")
+            {
+                Destroy(gameObject);
+                LevelManager.instance.spawnPlayer();
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
     }
 

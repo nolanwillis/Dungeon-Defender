@@ -14,12 +14,12 @@ public class Combat : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             attackRange = .5f;
-            Attack(10);
+            Attack(50);
         }
         if (Input.GetKeyDown("w"))
         {
             attackRange = 2.0f;
-            Attack(25);
+            Attack(100);
         }
     }
 

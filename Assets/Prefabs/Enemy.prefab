@@ -1404,7 +1404,7 @@ GameObject:
   - component: {fileID: 6234679863738194992}
   - component: {fileID: 6234679863738194999}
   m_Layer: 5
-  m_Name: Enemy0HealthBar
+  m_Name: HealthBar
   m_TagString: HealthBar
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1539,7 +1539,7 @@ GameObject:
   - component: {fileID: 6234679863806472021}
   - component: {fileID: 6234679863806472020}
   m_Layer: 5
-  m_Name: Enemy0Stats
+  m_Name: Stats
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1889,7 +1889,7 @@ GameObject:
   - component: {fileID: 7050423564708679437}
   - component: {fileID: 6234679864884254807}
   m_Layer: 3
-  m_Name: Enemy0
+  m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
