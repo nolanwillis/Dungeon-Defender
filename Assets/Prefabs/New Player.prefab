@@ -236,6 +236,7 @@ GameObject:
   - component: {fileID: 1129320918522975070}
   - component: {fileID: 6880028870800315026}
   - component: {fileID: 1070624262139900090}
+  - component: {fileID: -8135527572428653076}
   m_Layer: 0
   m_Name: New Player
   m_TagString: Player
@@ -386,6 +387,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3a3c0025f3d6cc743bb8eaabe8a99693, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  attackPoint: {fileID: 0}
+--- !u!114 &-8135527572428653076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 522030197714007322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc866c62fa8d65a46b76928f761a421f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &711801943694068237

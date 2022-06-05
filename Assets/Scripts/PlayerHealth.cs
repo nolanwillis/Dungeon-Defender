@@ -16,28 +16,6 @@ public class PlayerHealth : MonoBehaviour
         healthBar.SetMaxHealth(playerMaxHealth);
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            applyDamage(10);
-        }
-
-        // Checks player health
-        if (playerHealth <= 0)
-        {
-            if (gameObject.tag == "Player")
-            {
-                Destroy(gameObject);
-                LevelManager.instance.spawnPlayer();
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
-        }
-    }
-
     public void applyDamage(int amount)
     {
         if (playerHealth - amount >= 0)
