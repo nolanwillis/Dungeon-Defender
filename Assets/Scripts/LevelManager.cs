@@ -10,12 +10,8 @@ public class LevelManager : MonoBehaviour
     public GameObject playerPrefab;
     // Reference to enemy prefab
     public GameObject enemyPrefab;
-    // Location of spawn point
-    public Transform[] spawnPoints;
-    // Array that keeps track of which spawn points are in use
-    static private bool[] openSpawns = new bool[10];
-    // Integer thate keeps track of how many spawn points are left
-    int numOpenSpawns = openSpawns.Length;
+    // Reference to SpawnPointManager component
+    private SpawnPointManager spm; 
 
     private void Awake()
     {
@@ -24,14 +20,8 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-        // Set all spawn points to open
-        for (int i = 0; i < openSpawns.Length; i++)
-        {
-            openSpawns[i] = true;
-        }
-        // Append all spawn points to an array of transforms
-        spawnPoints = GameObject.Find("SpawnPoints").GetComponentsInChildren<Transform>();
-        // Spawn prefabs
+        // Set reference to SpawnPointManager component
+        spm = GameObject.Find("SpawnPoints").GetComponent<SpawnPointManager>();
         spawnPlayer();
         for (int i = 0; i < 4; i++)
         {
@@ -42,28 +32,11 @@ public class LevelManager : MonoBehaviour
     // spawnPlayer, instantiates New Player prefab
     public void spawnPlayer()
     {
-        // Select random spawn point from available spawn points
-        int randSpawnIndex = -1;
-        if (numOpenSpawns > 0)
-        {
-            while (randSpawnIndex == -1)
-            {
-                int currRandomIndex = Random.Range(0, 10);
-                if (openSpawns[currRandomIndex])
-                {
-                    randSpawnIndex = currRandomIndex;
-                    openSpawns[currRandomIndex] = false;
-                    numOpenSpawns--;
-                }
-            }
-        }
-        else
-        {
-            print("No available spawn point!");
-            return;
-        }
-        // Instatiate player into the game
-        GameObject player = Instantiate(playerPrefab, spawnPoints[randSpawnIndex].position, playerPrefab.transform.rotation);
+        // Index in SPM's spawnPoints array this prefab will use
+        int spawnPointIndex = spm.GetSpawnPoint();
+        // Instatiate player prefab into the game
+        GameObject player = Instantiate(playerPrefab, spm.spawnPoints[spawnPointIndex].position, 
+            playerPrefab.transform.rotation);
         // Reference to the Camera Follow component of the Main Camera
         CameraFollow cf = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraFollow>();
         // Reference to the Health Bar component of the Player Health Bar (the big one)
@@ -72,12 +45,14 @@ public class LevelManager : MonoBehaviour
         PlayerHealth ph = player.GetComponent<PlayerHealth>();
         // Reference to the Combat component of the player
         Combat cb = player.GetComponent<Combat>();
+        // Reference to the Metadata component of the player
+        Metadata md = player.GetComponent<Metadata>();
         // Set Player Health component Health Bar to healthbar gameobject
         if (ph != null && hb != null)
         {
             ph.healthBar = hb;
         }
-        // Set Camera Camera Follow component Target to player transform
+        // Set Camera Follow component Target to player transform
         if (cf != null && player != null)
         {
             cf.target = player.transform;
@@ -89,43 +64,39 @@ public class LevelManager : MonoBehaviour
             // Set Combat component Enemy Layer to Enemies
             cb.enemyLayer = LayerMask.GetMask("Enemies");
         }
+        // Set Metadata component spawn point to spawnPointIndex
+        if (md != null)
+        {
+            md.spawnPoint = spawnPointIndex;
+        }
     }
 
     // spawnEnemy, instantiates Enemy prefab
     public void spawnEnemy()
     {
-        // Select random spawn point from available spawn points
-        int randSpawnIndex = -1;
-        if (numOpenSpawns > 0)
-        {
-            while (randSpawnIndex == -1)
-            {
-                int currRandomIndex = Random.Range(0, 10);
-                if (openSpawns[currRandomIndex])
-                {
-                    randSpawnIndex = currRandomIndex;
-                    openSpawns[currRandomIndex] = false;
-                    numOpenSpawns--;
-                }
-            }
-        }
-        else
-        {
-            print("No available spawn point!");
-            return;
-        }
+        // Index in SPM's spawnPoints array this prefab will use
+        int spawnPointIndex = spm.GetSpawnPoint();
         // Instatiate player into the game
-        GameObject enemy = Instantiate(enemyPrefab, spawnPoints[randSpawnIndex].position, enemyPrefab.transform.rotation);
+        GameObject enemy = Instantiate(enemyPrefab, spm.spawnPoints[spawnPointIndex].position,
+            enemyPrefab.transform.rotation);
         /* Reference to HealthBar component of the HealthBar gameObject.
         The HealthBar gameObject is actually a child of Stats which is a child
         of the enemy. */
-        HealthBar hb = enemy.transform.GetChild(0).transform.GetChild(0).gameObject.GetComponent<HealthBar>();
+        HealthBar hb = enemy.transform.GetChild(0).transform.GetChild(0).gameObject
+            .GetComponent<HealthBar>();
         // Reference to the Player Health component of the enemy
         PlayerHealth ph = enemy.GetComponent<PlayerHealth>();
+        // Reference to the Metadata component of the enemy
+        Metadata md = enemy.GetComponent<Metadata>();
         // Set Player Health component Health Bar to healthbar gameobject
         if (ph != null && hb != null)
         {
             ph.healthBar = hb;
+        }
+        // Set Metadata component spawn point to spawnPointIndex
+        if (md != null)
+        {
+            md.spawnPoint = spawnPointIndex;
         }
     }
 }

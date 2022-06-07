@@ -1888,6 +1888,7 @@ GameObject:
   - component: {fileID: 6234679864884254800}
   - component: {fileID: 7050423564708679437}
   - component: {fileID: 6234679864884254807}
+  - component: {fileID: 4728351988361962325}
   m_Layer: 3
   m_Name: Enemy
   m_TagString: Untagged
@@ -1992,6 +1993,19 @@ MonoBehaviour:
   playerMaxHealth: 400
   playerHealth: 400
   healthBar: {fileID: 6234679863738194999}
+--- !u!114 &4728351988361962325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6505275509479667859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e4c66cfa02e887408f78924fd72e4b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnPoint: 0
 --- !u!1 &6575394923136361410
 GameObject:
   m_ObjectHideFlags: 0

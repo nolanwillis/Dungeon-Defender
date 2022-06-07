@@ -16,6 +16,19 @@ public class PlayerHealth : MonoBehaviour
         healthBar.SetMaxHealth(playerMaxHealth);
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+        if (gameObject.GetComponent<PlayerHealth>().playerHealth <= 0)
+        {
+            Destroy(gameObject);
+            if (gameObject.tag == "Player")
+            {
+                LevelManager.instance.spawnPlayer();
+            }
+        }
+    }
+
     public void applyDamage(int amount)
     {
         if (playerHealth - amount >= 0)

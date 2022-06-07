@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpawnPointManager : MonoBehaviour
 {
     // Location of spawn point
-    private Transform[] spawnPoints;
+    public Transform[] spawnPoints;
     // Array that keeps track of which spawn points are in use
     public bool[] openSpawns;
     // Integer thate keeps track of how many spawn points are left
