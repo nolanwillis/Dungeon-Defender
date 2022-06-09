@@ -391,8 +391,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 0
-  attackPoint: {fileID: 0}
+    m_Bits: 8
+  attackPoint: {fileID: 6835638197987344833}
 --- !u!114 &-4901205319847051036
 MonoBehaviour:
   m_ObjectHideFlags: 0

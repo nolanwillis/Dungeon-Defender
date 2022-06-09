@@ -44,8 +44,6 @@ public class LevelManager : MonoBehaviour
         HealthBar hb = GameObject.Find("PlayerHealthBar").GetComponent<HealthBar>();
         // Reference to the Player Health component of the player
         PlayerHealth ph = player.GetComponent<PlayerHealth>();
-        // Reference to the Combat component of the player
-        Combat cb = player.GetComponent<Combat>();
         // Reference to the Metadata component of the player
         Metadata md = player.GetComponent<Metadata>();
         // Set Player Health component Health Bar to healthbar gameobject
@@ -57,13 +55,6 @@ public class LevelManager : MonoBehaviour
         if (cf != null && player != null)
         {
             cf.target = player.transform;
-        }
-        if (cb != null)
-        {
-            // Set Combat component Attack Point to the attackPoint gameobject transform
-            cb.attackPoint = GameObject.Find("AttackPoint").transform; 
-            // Set Combat component Enemy Layer to Enemies
-            cb.enemyLayer = LayerMask.GetMask("Enemies");
         }
         // Set Metadata component spawn point to spawnPointIndex
         if (md != null)

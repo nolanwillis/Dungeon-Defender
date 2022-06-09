@@ -9,7 +9,7 @@ public class Combat : MonoBehaviour
     public Transform attackPoint;
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
@@ -23,7 +23,7 @@ public class Combat : MonoBehaviour
         }
     }
 
-    void Attack(int damage)
+    private void Attack(int damage)
     {
         Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, 
             attackRange, enemyLayer);
