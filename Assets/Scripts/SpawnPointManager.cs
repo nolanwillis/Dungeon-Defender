@@ -12,7 +12,7 @@ public class SpawnPointManager : MonoBehaviour
     private int numOpenSpawns;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         // Append all spawn points in level to an array of transforms
         spawnPoints = gameObject.GetComponentsInChildren<Transform>();

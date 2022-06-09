@@ -25,19 +25,12 @@ public class Combat : MonoBehaviour
 
     void Attack(int damage)
     {
-        Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayer);
+        Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, 
+            attackRange, enemyLayer);
         foreach(Collider enemy in hitEnemies)
         {
             Debug.Log("Hit: " + enemy.name);
             enemy.GetComponent<PlayerHealth>().applyDamage(damage);
-        }
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        if (attackPoint != null)
-        {
-            Gizmos.DrawWireSphere(attackPoint.position, attackRange);
         }
     }
 }

@@ -5,7 +5,9 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     public static LevelManager instance;
-    
+
+    // Reference to player gameObject
+    public GameObject playerRef;
     // Reference to player prefab
     public GameObject playerPrefab;
     // Reference to enemy prefab
@@ -23,10 +25,7 @@ public class LevelManager : MonoBehaviour
         // Set reference to SpawnPointManager component
         spm = GameObject.Find("SpawnPoints").GetComponent<SpawnPointManager>();
         spawnPlayer();
-        for (int i = 0; i < 4; i++)
-        {
-            spawnEnemy();
-        }
+        spawnEnemy();
     }
 
     // spawnPlayer, instantiates New Player prefab
@@ -37,6 +36,8 @@ public class LevelManager : MonoBehaviour
         // Instatiate player prefab into the game
         GameObject player = Instantiate(playerPrefab, spm.spawnPoints[spawnPointIndex].position, 
             playerPrefab.transform.rotation);
+        // Set reference to player gameObject for future use
+        playerRef = player;
         // Reference to the Camera Follow component of the Main Camera
         CameraFollow cf = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraFollow>();
         // Reference to the Health Bar component of the Player Health Bar (the big one)

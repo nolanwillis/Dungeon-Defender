@@ -17,7 +17,7 @@ public class PlayerHealth : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (gameObject.GetComponent<PlayerHealth>().playerHealth <= 0)
         {

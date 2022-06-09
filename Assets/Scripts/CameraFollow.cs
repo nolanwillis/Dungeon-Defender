@@ -10,12 +10,15 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private float smoothSpeed = .125f;
     // Camera position offset
     [SerializeField] private Vector3 offset;
+    // Camera velocity
+    private Vector3 velocity;
 
     // FixedUpdate, called at same rate as physics engine
-    void FixedUpdate()
+    void LateUpdate()
     {
         Vector3 desiredPosition = target.position + offset;
-        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
+        Vector3 smoothedPosition = Vector3.SmoothDamp(transform.position, 
+            desiredPosition, ref velocity, smoothSpeed);
         transform.position = smoothedPosition;
     }
 
