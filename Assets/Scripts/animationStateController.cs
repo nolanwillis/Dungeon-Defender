@@ -16,7 +16,7 @@ public class animationStateController : MonoBehaviour
     private Rigidbody rb;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         animController = GetComponent<Animator>();
         velocityHash = Animator.StringToHash("Velocity");
@@ -29,10 +29,10 @@ public class animationStateController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         // Set velocity of animation controller to player velocity from 
-        // the Player Movement component
+        // the Rigidbody component
         velocity = Math.Abs(rb.velocity.x);
         animController.SetFloat(velocityHash, velocity);
 

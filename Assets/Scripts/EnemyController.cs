@@ -4,9 +4,18 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    public UnityEngine.AI.NavMeshAgent agent;
-    public Transform playerT;
+    // References
+    private UnityEngine.AI.NavMeshAgent agent;
+    private Transform playerT;
     public LayerMask groundLayer, playerLayer;
+
+    // Animation
+    Animator animController;
+    private int velocityHash;
+    private int attackHash;
+    private int attackValHash;
+    private float velocity = 0.0f;
+    private int prevAttack = -1;
 
     // Search
     public Vector3 walkPoint;
@@ -23,34 +32,45 @@ public class EnemyController : MonoBehaviour
 
     private void Awake()
     {
-        playerT = GameObject.FindWithTag("Player").transform;
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+    }
+
+    // Start is called before the first frame update
+    private void Start()
+    {
+        animController = GetComponent<Animator>();
+        velocityHash = Animator.StringToHash("Velocity");
+        attackHash = Animator.StringToHash("Attack");
+        attackValHash = Animator.StringToHash("attackVal");
     }
 
     private void FixedUpdate()
     {
+        // Set player transform, must be in update in case respawn
+        playerT = GameObject.FindGameObjectWithTag("Player").transform;
         // Check if player is in sight/attack range
         playerInSightRange = Physics.CheckSphere(transform.position, sightRange,
             playerLayer);
         playerInAttackRange = Physics.CheckSphere(transform.position, attackRange,
             playerLayer);
-
+        // Set velocity in the enemyAnimationController
+        velocity = Mathf.Abs(agent.velocity.magnitude);
+        animController.SetFloat(velocityHash, velocity);
         // Depending on sight/attack range set current state
         if (!playerInSightRange && !playerInAttackRange) Search();
         if (playerInSightRange && !playerInAttackRange) Follow();
         if (playerInSightRange && playerInAttackRange) Attack();
-
     }
 
     private void Search()
     {
+        // If walkpoint not set find a walkpoint
         if (!walkPointSet) SearchWalkPoint();
+        // If walkpoint set go to walkpoint
         if (walkPointSet) agent.SetDestination(walkPoint);
-
-        // Distance to walkPoint
+        // Set current distance to walkPoint
         Vector3 distanceToWP = transform.position - walkPoint;
-
-        // walkPointReached
+        // Determine if walkPointReached
         if (distanceToWP.magnitude < 1.0f) walkPointSet = false;
     }
 
@@ -72,6 +92,19 @@ public class EnemyController : MonoBehaviour
     {
         agent.SetDestination(playerT.position);
     }
+
+    private int getRandomAttack()
+    {
+        // Return value
+        int result = -1;
+        // While result == prevAttack, find a new attack 
+        while (result == prevAttack)
+        {
+            result = Random.Range(0, 5);
+        }
+        prevAttack = result;
+        return result;
+    }
     
     private void Attack()
     {
@@ -79,13 +112,14 @@ public class EnemyController : MonoBehaviour
         agent.SetDestination(transform.position);
         // If attacking look at player
         transform.LookAt(playerT);
-
+        // If not currently attacking, or in the time between attacks window, attack
         if (!hasAttacked)
         {
-            // todo: set attack animations/logic
-
+            animController.SetInteger(attackValHash, getRandomAttack());
+            // Trigger attack animation
+            animController.SetTrigger(attackHash);
             hasAttacked = true;
-           
+            Invoke(nameof(ResetAttack), timeBetweenAttacks);
         }
     }
 

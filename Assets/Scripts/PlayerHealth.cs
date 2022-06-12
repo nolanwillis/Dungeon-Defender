@@ -10,6 +10,8 @@ public class PlayerHealth : MonoBehaviour
     public int playerHealth;
     // Reference to Health Bar component of the HealthBar GameObject
     public HealthBar healthBar;
+    // Reference to animation component
+    public Animation anim;
     private void Start()
     {
         playerHealth = playerMaxHealth;
@@ -21,6 +23,7 @@ public class PlayerHealth : MonoBehaviour
     {
         if (gameObject.GetComponent<PlayerHealth>().playerHealth <= 0)
         {
+            anim.Play("enemyDeath");
             Destroy(gameObject);
             if (gameObject.tag == "Player")
             {
