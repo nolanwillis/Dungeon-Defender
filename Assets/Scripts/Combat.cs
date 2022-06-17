@@ -5,8 +5,8 @@ using UnityEngine;
 public class Combat : MonoBehaviour
 {
     private float attackRange = .5f;
-    public LayerMask enemyLayer;
-    public Transform attackPoint;
+    [SerializeField] LayerMask enemyLayer;
+    [SerializeField] Transform attackPoint;
 
     // Update is called once per frame
     private void Update()

@@ -7,27 +7,28 @@ public class EnemyController : MonoBehaviour
     // References
     private UnityEngine.AI.NavMeshAgent agent;
     private Transform playerT;
-    public LayerMask groundLayer, playerLayer;
+    [SerializeField] LayerMask groundLayer, playerLayer;
 
     // Animation
-    Animator animController;
+    private Animator animController;
     private int velocityHash;
     private int attackHash;
     private int attackValHash;
     private float velocity = 0.0f;
-    private int prevAttack = -1;
 
     // Search
-    public Vector3 walkPoint;
-    bool walkPointSet;
-    public float walkPointRange;
+    [SerializeField] Vector3 walkPoint;
+    private bool walkPointSet;
+    [SerializeField] float walkPointRange;
 
     // Attack
-    public float timeBetweenAttacks;
-    bool hasAttacked;
+    [SerializeField] int damage = 10;
+    [SerializeField] Transform attackPoint;
+    [SerializeField] float hitDetectRange = 2.0f;
+    private bool canAttack = true;
 
     // States
-    public float sightRange, attackRange;
+    [SerializeField] float sightRange, attackRange;
     public bool playerInSightRange, playerInAttackRange;
 
     private void Awake()
@@ -93,38 +94,49 @@ public class EnemyController : MonoBehaviour
         agent.SetDestination(playerT.position);
     }
 
-    private int getRandomAttack()
+    private void detectHit()
     {
-        // Return value
-        int result = -1;
-        // While result == prevAttack, find a new attack 
-        while (result == prevAttack)
+        //print("Detect hit fired");
+        // Detect if enemies (player) is hit
+        Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position,
+            hitDetectRange, playerLayer);
+        foreach (Collider enemy in hitEnemies)
         {
-            result = Random.Range(0, 5);
+            //print(enemy);
+            enemy.GetComponent<PlayerHealth>().applyDamage(damage);
         }
-        prevAttack = result;
-        return result;
     }
-    
+
     private void Attack()
     {
         // If attacking don't move
         agent.SetDestination(transform.position);
-        // If attacking look at player
+        // If attacking make sure enemy is looking at player
         transform.LookAt(playerT);
-        // If not currently attacking, or in the time between attacks window, attack
-        if (!hasAttacked)
+        if (canAttack)
         {
-            animController.SetInteger(attackValHash, getRandomAttack());
+            canAttack = false;
+            // Get a random attack animation index
+            int attackIndex = Random.Range(0, 4);
+            // Set random attack animation
+            animController.SetInteger(attackValHash, attackIndex);
             // Trigger attack animation
             animController.SetTrigger(attackHash);
-            hasAttacked = true;
-            Invoke(nameof(ResetAttack), timeBetweenAttacks);
+            // Delay hit dection until after the randomly selected animation
+            // Swipe animation (len = 2.667, speed = 2.0)
+            if (attackIndex == 0 || attackIndex == 1) StartCoroutine(delayDetect(2.667f, 2.0f));
+            // Punch animation (len = 1.1, speed = 1.0)
+            if (attackIndex == 2 || attackIndex == 3) StartCoroutine(delayDetect(1.1f, 1.0f));
         }
     }
 
-    private void ResetAttack()
+    // Calls the detectHit function after an animations total time,
+    // animations total time = (length of animation) * (1/anim-state-speed)
+    IEnumerator delayDetect(float lenOfAnim, float animContSpeed)
     {
-        hasAttacked = false;
+        float totalAnimTime = lenOfAnim * (1.0f/animContSpeed);
+        yield return new WaitForSeconds(totalAnimTime);
+        detectHit();
+        canAttack = true;
     }
 }
