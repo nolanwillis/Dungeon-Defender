@@ -1978,7 +1978,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerMaxHealth: 400
-  playerHealth: 400
   healthBar: {fileID: 6234679863738194999}
 --- !u!114 &4728351988361962325
 MonoBehaviour:

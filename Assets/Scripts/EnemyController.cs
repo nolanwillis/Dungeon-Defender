@@ -7,7 +7,7 @@ public class EnemyController : MonoBehaviour
     // References
     private UnityEngine.AI.NavMeshAgent agent;
     private Transform playerT;
-    [SerializeField] LayerMask groundLayer, playerLayer;
+    [SerializeField] private LayerMask groundLayer, playerLayer;
 
     // Animation
     private Animator animController;
@@ -17,18 +17,18 @@ public class EnemyController : MonoBehaviour
     private float velocity = 0.0f;
 
     // Search
-    [SerializeField] Vector3 walkPoint;
+    [SerializeField] private Vector3 walkPoint;
     private bool walkPointSet;
-    [SerializeField] float walkPointRange;
+    [SerializeField] private float walkPointRange;
 
     // Attack
-    [SerializeField] int damage = 10;
-    [SerializeField] Transform attackPoint;
-    [SerializeField] float hitDetectRange = 2.0f;
+    [SerializeField] private int damage = 10;
+    [SerializeField] private Transform attackPoint;
+    [SerializeField] private float hitDetectRange = 2.0f;
     private bool canAttack = true;
 
     // States
-    [SerializeField] float sightRange, attackRange;
+    [SerializeField] private float sightRange, attackRange;
     public bool playerInSightRange, playerInAttackRange;
 
     private void Awake()

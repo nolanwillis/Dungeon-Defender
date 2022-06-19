@@ -5,29 +5,41 @@ using UnityEngine;
 public class PlayerHealth : MonoBehaviour
 {
     // Max health player can have
-    public int playerMaxHealth = 100;
+    [SerializeField] private int playerMaxHealth = 100;
     // Current player health
-    public int playerHealth;
+    private int playerHealth;
     // Reference to Health Bar component of the HealthBar GameObject
     public HealthBar healthBar;
-    
+
+
     private void Start()
     {
         playerHealth = playerMaxHealth;
         healthBar.SetMaxHealth(playerMaxHealth);
     }
 
-    // Update is called once per frame
     private void Update()
     {
-        if (gameObject.GetComponent<PlayerHealth>().playerHealth <= 0)
+        if (playerHealth <= 0)
         {
             Destroy(gameObject);
             if (gameObject.tag == "Player")
             {
+                // Spawn new player
                 LevelManager.instance.spawnPlayer();
+                // Decrement lives count
+                GameObject.FindGameObjectWithTag("LivesUI").
+                    GetComponent<LivesCounter>().DecrementLives();
+            } 
+            else
+            {
+                // If tag != "Player" then PlayerHealth component must be
+                // attached to enemy. So increase player score by 100.
+                GameObject.FindGameObjectWithTag("ScoreUI").
+                     GetComponent<ScoreCounter>().IncreaseScore(100);
             }
         }
+        
     }
 
     public void applyDamage(int amount)
@@ -40,7 +52,6 @@ public class PlayerHealth : MonoBehaviour
         {
             playerHealth = 0;
         }
-
         healthBar.setHealth(playerHealth);
     }
 
@@ -53,7 +64,9 @@ public class PlayerHealth : MonoBehaviour
         else
         {
             playerHealth = playerMaxHealth;
+            healthBar.setHealth(playerHealth);
         }
+        
     }
 
     

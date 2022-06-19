@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Ground
   - HealthBar
+  - LivesUI
+  - ScoreUI
   layers:
   - Default
   - TransparentFX
