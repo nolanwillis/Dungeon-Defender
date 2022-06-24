@@ -22,9 +22,9 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float walkPointRange;
 
     // Attack
-    [SerializeField] private int damage = 10;
+    [SerializeField] private int damage;
     [SerializeField] private Transform attackPoint;
-    [SerializeField] private float hitDetectRange = 2.0f;
+    [SerializeField] private float hitDetectRange;
     private bool canAttack = true;
 
     // States

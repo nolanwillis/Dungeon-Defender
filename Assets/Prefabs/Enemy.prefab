@@ -756,7 +756,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 4015119392836283158, guid: 8dc94c54f9509e9498621fbdc66a2f25, type: 3}
+  - {fileID: 2100000, guid: 631f1059d1ceaf548bbfa659a650eb82, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2011,7 +2011,7 @@ NavMeshAgent:
   m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: -0.1
+  m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!54 &-9092387315482812334
@@ -2028,7 +2028,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 1
-  m_Constraints: 88
+  m_Constraints: 120
   m_CollisionDetection: 0
 --- !u!114 &-619012764503834871
 MonoBehaviour:
@@ -2052,9 +2052,9 @@ MonoBehaviour:
   walkPointRange: 11
   damage: 5
   attackPoint: {fileID: 4791350976753871193}
-  hitDetectRange: 3
+  hitDetectRange: 1.5
   sightRange: 11
-  attackRange: 2
+  attackRange: 1
   playerInSightRange: 0
   playerInAttackRange: 0
 --- !u!1 &6575394923136361410
