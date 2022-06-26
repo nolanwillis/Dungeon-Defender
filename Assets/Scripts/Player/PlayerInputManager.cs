@@ -5,9 +5,11 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputManager : MonoBehaviour
 {
+    // Enables unity's input system, reads and handles user inputs
     // Component references
     [SerializeField] private PlayerInput playerInput;
     private PlayerAnimationManager playerAnimationManager;
+    private PlayerLocomotion playerLocomotion;
 
     public Vector2 movementInput;
     public float horizontalInput;
@@ -18,7 +20,8 @@ public class PlayerInputManager : MonoBehaviour
     {
         // Set component references
         // Player components
-        playerAnimationManager = GetComponent<PlayerAnimationManager>();    
+        playerAnimationManager = GetComponent<PlayerAnimationManager>();
+        playerLocomotion = GetComponent<PlayerLocomotion>();
     }
 
     private void OnEnable()
@@ -46,8 +49,9 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleMovementInput()
     {
+        // Set horizontal input variable which is read in locomotion
         horizontalInput = movementInput.x;
-        playerAnimationManager.UpdateAnimatorParameters(Mathf.Abs(horizontalInput), true);
+        
     }
 
     private void HandleJumpInput()

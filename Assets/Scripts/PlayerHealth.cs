@@ -4,17 +4,18 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
+    // Component references
+    public HealthBar healthBar;
     // Max health player can have
     [SerializeField] private int playerMaxHealth = 100;
     // Current player health
     private int playerHealth;
-    // Reference to Health Bar component of the HealthBar GameObject
-    public HealthBar healthBar;
 
-
-    private void Start()
+    private void Awake()
     {
+        // Set current health to max health
         playerHealth = playerMaxHealth;
+        // Set max health of player
         healthBar.SetMaxHealth(playerMaxHealth);
     }
 
@@ -22,6 +23,7 @@ public class PlayerHealth : MonoBehaviour
     {
         if (playerHealth <= 0)
         {
+            print(healthBar);
             Destroy(gameObject);
             if (gameObject.tag == "Player")
             {
@@ -65,9 +67,6 @@ public class PlayerHealth : MonoBehaviour
         {
             playerHealth = playerMaxHealth;
             healthBar.setHealth(playerHealth);
-        }
-        
+        } 
     }
-
-    
 }

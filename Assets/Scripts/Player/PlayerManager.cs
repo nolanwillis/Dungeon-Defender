@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
+    // Calls all handler functions that are triggered by input
     // Component references
     PlayerInputManager playerInputManager;
     PlayerLocomotion playerLocomotion;
@@ -32,9 +33,4 @@ public class PlayerManager : MonoBehaviour
         playerLocomotion.HandleAllMovement();
     }
 
-    private void LateUpdate()
-    {
-        isInteracting = playerAnimatorController.GetBool("isInteracting");
-        playerLocomotion.isJumping = playerAnimatorController.GetBool("isJumping");
-    }
 }

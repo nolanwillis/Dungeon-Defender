@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class PlayerLocomotion : MonoBehaviour
 {
-    // Component references
+    // All handler functions related to locomotion(jumping, falling, landing, rotating, moving)
+    // References
     private PlayerManager playerManager;
-    private PlayerAnimationManager playerAnimationManager;
+    private Animator playerAnimatorController;
     private PlayerInputManager playerInputManager;
     private Rigidbody playerRigidbody;
 
     [Header("Movement Flags")]
     public bool isGrounded;
-    public bool isJumping;
 
     [Header("Movement Values")]
     [SerializeField] private float playerMovementSpeed = 7.0f;
@@ -22,6 +22,7 @@ public class PlayerLocomotion : MonoBehaviour
 
     [Header("Falling")]
     [SerializeField] private float inAirTimer;
+    [SerializeField] private float inAirControl;
     [SerializeField] private float leapingVelocity;
     [SerializeField] private float fallingVelocity;
     [SerializeField] private float rayCastHeightOffset = 0.5f;
@@ -29,7 +30,11 @@ public class PlayerLocomotion : MonoBehaviour
 
     [Header("Jumping")]
     [SerializeField] private float jumpForce;
-    [SerializeField] private float airControl;
+    [SerializeField] private GameObject ledgeRayUpper;
+    [SerializeField] private GameObject ledgeRayLower;
+    
+    private int velocityXHash = Animator.StringToHash("velocityX");
+    private int isGroundedHash = Animator.StringToHash("isGrounded");
 
     private void Awake()
     {
@@ -37,7 +42,7 @@ public class PlayerLocomotion : MonoBehaviour
         // Player components
         playerManager = GetComponent<PlayerManager>();
         playerInputManager = GetComponent<PlayerInputManager>();
-        playerAnimationManager = GetComponent<PlayerAnimationManager>();
+        playerAnimatorController = GetComponent<Animator>();
         playerRigidbody = GetComponent<Rigidbody>();
     }
 
@@ -45,8 +50,6 @@ public class PlayerLocomotion : MonoBehaviour
     {
         // Handle falling and landing
         HandleFallingAndLanding();
-        // If player is interacting disable all movement
-        if (playerManager.isInteracting) return;
         // Handle lateral movement
         HandleMovement();
         // Handle rotation
@@ -66,6 +69,8 @@ public class PlayerLocomotion : MonoBehaviour
         float playerLateralForce = playerVelocityDelta * playerAccelerationState;
         // Apply the lateral force to the player
         playerRigidbody.AddForce(playerLateralForce * Vector3.right);
+        // Update velocity parameter in the player animator contoller
+        playerAnimatorController.SetFloat(velocityXHash, Mathf.Abs(playerInputManager.horizontalInput));
     }
 
     private void HandleRotation()
@@ -89,45 +94,63 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void HandleFallingAndLanding()
     {
+        // Raycast variables for ground detection 
         RaycastHit hit;
         Vector3 rayCastOrigin = transform.position;
         rayCastOrigin.y += rayCastHeightOffset;
-        
-        if (!isGrounded && !isJumping)
-        {
-            if (!playerManager.isInteracting)
-            {
-                playerAnimationManager.PlayTargetAnimation("falling", true);
-            }
-            inAirTimer = inAirTimer + Time.deltaTime;
-            playerRigidbody.AddForce(transform.forward * leapingVelocity);
-            playerRigidbody.AddForce(Vector3.down * fallingVelocity * inAirTimer);
-        }
 
-        if (Physics.SphereCast(rayCastOrigin, 0.2f, Vector3.down, out hit, 0.5f, groundLayer))
+        // Ground detection logic
+        if (Physics.SphereCast(rayCastOrigin, 0.2f, Vector3.down, out hit, 0.7f, groundLayer))
         {
-            if (!isGrounded && playerManager.isInteracting)
-            {
-                playerAnimationManager.PlayTargetAnimation("landing", true);
-            }
+            // Reset in air timer
             inAirTimer = 0.0f;
+            // Update grounded flag
             isGrounded = true;
-            playerManager.isInteracting = false;
+            // Update velocity parameter in the player animator controller
+            playerAnimatorController.SetBool(isGroundedHash, true);
         }
         else
         {
+            // Update the grounded flag
             isGrounded = false;
+            // Update velocity parameter in the player animator controller
+            playerAnimatorController.SetBool(isGroundedHash, false);
+            // Update in air timer
+            inAirTimer = inAirTimer + Time.deltaTime;
+            // Add leaping force when leaving a surface
+            playerRigidbody.AddForce(transform.forward * leapingVelocity);
+            // Increase gravitonal force based on time in air
+            playerRigidbody.AddForce(Vector3.down * fallingVelocity * inAirTimer);
+            // If theres horizontal input apply dampening force in opposite direction of movement
+            if (playerInputManager.horizontalInput != 0)
+            {
+                playerRigidbody.AddForce(-Mathf.Sign(playerInputManager.horizontalInput) * inAirControl 
+                    * Vector3.right);
+            }
         }
     }
 
-    public void HandleJumping()
+    public void HandleJump()
     {
+        // Only jump if player is on ground
         if (isGrounded)
         {
-            playerAnimationManager.playerAnimatorController.SetBool("isJumping", true);
-            playerAnimationManager.PlayTargetAnimation("jump", false);
-
-            float jumpingVelocity = Mathf.Sqrt(-2 * gravitIntensity * jumpHeight);
+            // Add jump force to player
+            playerRigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            // Trigger jump animation
+            playerAnimatorController.CrossFade("jump", 0.1f);
+        }  
+        // Ledge assist
+        if (Physics.Raycast(ledgeRayLower.transform.position, Vector3.forward, 0.5f, groundLayer))
+        {
+            print("Lower ledge ray hit");
+            if (!Physics.Raycast(ledgeRayUpper.transform.position, Vector3.forward, 0.5f, groundLayer))
+            {
+                print("Upper ledge ray hit");
+                playerRigidbody.AddForce(Vector3.up * 0.6f, ForceMode.Impulse);
+                playerRigidbody.AddForce(Vector3.forward * 1.1f * playerInputManager.horizontalInput, 
+                    ForceMode.Impulse);
+            }
         }
     }
 }
