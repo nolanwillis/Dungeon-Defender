@@ -16,18 +16,18 @@ public class EnemyController : MonoBehaviour
     private int attackValHash;
     private float velocity = 0.0f;
 
-    // Search
+    [Header("Searching")]
     [SerializeField] private Vector3 walkPoint;
     private bool walkPointSet;
     [SerializeField] private float walkPointRange;
 
-    // Attack
+    [Header("Attacking")]
     [SerializeField] private int damage;
     [SerializeField] private Transform attackPoint;
     [SerializeField] private float hitDetectRange;
     private bool canAttack = true;
 
-    // States
+    [Header("Range")]
     [SerializeField] private float sightRange, attackRange;
     public bool playerInSightRange, playerInAttackRange;
 

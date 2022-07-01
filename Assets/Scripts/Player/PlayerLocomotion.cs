@@ -33,8 +33,11 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] private GameObject ledgeRayUpper;
     [SerializeField] private GameObject ledgeRayLower;
     
+    // Animation Hashes
     private int velocityXHash = Animator.StringToHash("velocityX");
     private int isGroundedHash = Animator.StringToHash("isGrounded");
+
+    private float previousDirection = 1;
 
     private void Awake()
     {
@@ -46,17 +49,16 @@ public class PlayerLocomotion : MonoBehaviour
         playerRigidbody = GetComponent<Rigidbody>();
     }
 
+    // Calls all movement functions (non-actions only)
     public void HandleAllMovement()
     {
-        // Handle falling and landing
         HandleFallingAndLanding();
-        // Handle lateral movement
-        HandleMovement();
-        // Handle rotation
+        HandleLateralMovement();
         HandleRotation();
     }
 
-    private void HandleMovement()
+    // Movement functions
+    private void HandleLateralMovement()
     {
         // Calculate player's target velocity 
         float playerTargetVelocity = playerInputManager.horizontalInput * playerMovementSpeed;
@@ -75,19 +77,22 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void HandleRotation()
     {
+        // Target rotation of player
         Quaternion targetRotation;
         if (playerInputManager.horizontalInput != 0)
         {
-            // Target rotation if there's horizontal input
-            targetRotation =
-            Quaternion.Euler(0.0f, Mathf.Sign(playerInputManager.horizontalInput) * 90.0f, 0.0f);
+            // If there's input set target rotation to 90 * horizontal input
+            targetRotation = Quaternion.Euler(0.0f, 
+                Mathf.Sign(playerInputManager.horizontalInput) * 90.0f, 0.0f);
+            // Update the previous direction variable
+            previousDirection = playerInputManager.horizontalInput;
         }
         else
         {
-            // Target rotation if there's no horizontal input
-            targetRotation = Quaternion.Euler(0.0f, 180.0f, 0.0f);
+            // If there's no horizontal input set rotation to previous direction
+            targetRotation = Quaternion.Euler(0.0f, previousDirection * 90.0f, 0.0f);
         }
-        // Rotate player;
+        // Rotate player
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 
             playerRotationSpeed);
     }
@@ -130,6 +135,7 @@ public class PlayerLocomotion : MonoBehaviour
         }
     }
 
+    // Action functions
     public void HandleJump()
     {
         // Only jump if player is on ground

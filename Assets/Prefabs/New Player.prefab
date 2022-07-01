@@ -236,7 +236,7 @@ GameObject:
   - component: {fileID: -7677690152377981864}
   - component: {fileID: 6880028870800315026}
   - component: {fileID: -177347059762564188}
-  - component: {fileID: 3583846610719829546}
+  - component: {fileID: 6552822813526135390}
   - component: {fileID: -2614847975852635223}
   m_Layer: 6
   m_Name: New Player
@@ -327,6 +327,10 @@ MonoBehaviour:
   movementInput: {x: 0, y: 0}
   horizontalInput: 0
   jumpInput: 0
+  crouchInput: 0
+  blockInput: 0
+  attackInput: 0
+  castInput: 0
 --- !u!114 &-7429101276938917334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -359,13 +363,13 @@ MonoBehaviour:
   playerRotationSpeed: 0.15
   inAirTimer: 0
   inAirControl: 0
-  leapingVelocity: 2
+  leapingVelocity: 3
   fallingVelocity: 33
   rayCastHeightOffset: 0.5
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
-  jumpForce: 7.75
+  jumpForce: 8
   ledgeRayUpper: {fileID: 7061287963845336895}
   ledgeRayLower: {fileID: 3614019253476019399}
 --- !u!95 &6880028870800315026
@@ -402,22 +406,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthBar: {fileID: 0}
   playerMaxHealth: 100
---- !u!114 &3583846610719829546
+--- !u!114 &6552822813526135390
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 522030197714007322}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a3c0025f3d6cc743bb8eaabe8a99693, type: 3}
+  m_Script: {fileID: 11500000, guid: fcb441dbf9bbfaa4d81f7e1bd43e0d97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   enemyLayer:
     serializedVersion: 2
     m_Bits: 8
-  attackPoint: {fileID: 0}
+  attackPoint: {fileID: 6835638197987344833}
 --- !u!114 &-2614847975852635223
 MonoBehaviour:
   m_ObjectHideFlags: 0

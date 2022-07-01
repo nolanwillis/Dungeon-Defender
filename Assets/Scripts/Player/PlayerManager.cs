@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    // Calls all handler functions that are triggered by input
-    // Component references
+    // References
     PlayerInputManager playerInputManager;
     PlayerLocomotion playerLocomotion;
-    Animator playerAnimatorController;
 
     // Animation interacting state
     public bool isInteracting;
@@ -18,7 +16,6 @@ public class PlayerManager : MonoBehaviour
         // Player components
         playerInputManager = GetComponent<PlayerInputManager>();
         playerLocomotion = GetComponent<PlayerLocomotion>();
-        playerAnimatorController = GetComponent<Animator>();
     }
 
     private void Update()
@@ -29,7 +26,7 @@ public class PlayerManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Handle all player movement
+        // Handle everything related to player movement
         playerLocomotion.HandleAllMovement();
     }
 

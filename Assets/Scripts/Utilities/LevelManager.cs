@@ -22,6 +22,7 @@ public class LevelManager : MonoBehaviour
         // Set reference to spawn point manager component
         spawnPointManager = GameObject.Find("SpawnPoints").GetComponent<SpawnPointManager>();
         spawnPlayer();
+        spawnEnemy();
     }
 
     // Instantiates New Player prefab

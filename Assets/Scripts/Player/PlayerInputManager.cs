@@ -5,33 +5,45 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputManager : MonoBehaviour
 {
-    // Enables unity's input system, reads and handles user inputs
-    // Component references
+    // References
     [SerializeField] private PlayerInput playerInput;
-    private PlayerAnimationManager playerAnimationManager;
     private PlayerLocomotion playerLocomotion;
+    private PlayerCombat playerCombat;
 
+    // Input
+    [Header("Locomotion")]
     public Vector2 movementInput;
     public float horizontalInput;
     public bool jumpInput;
     
-
+    [Header("Combat")]
+    public bool blockPressInput;
+    public bool blockReleaseInput;
+    public bool attackInput;
+    public bool castInput;
+    
     private void Awake()
     {
-        // Set component references
-        // Player components
-        playerAnimationManager = GetComponent<PlayerAnimationManager>();
+        // Set references
         playerLocomotion = GetComponent<PlayerLocomotion>();
+        playerCombat = GetComponent<PlayerCombat>();
     }
 
     private void OnEnable()
     {
         if (playerInput == null)
         {
+            // If player input is not instantiated create a new player input object
             playerInput = new PlayerInput();
+            // Read input values
             playerInput.PlayerMovement.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
             playerInput.PlayerActions.Jump.performed += i => jumpInput = true;
+            playerInput.PlayerActions.BlockPress.performed += i => blockPressInput = true;
+            playerInput.PlayerActions.BlockRelease.performed += i => blockReleaseInput = true;
+            playerInput.PlayerActions.Attack.performed += i => attackInput = true;
+            playerInput.PlayerActions.Cast.performed += i => castInput = true;
         }
+        // Enable the player input object
         playerInput.Enable();
     }
     
@@ -42,24 +54,54 @@ public class PlayerInputManager : MonoBehaviour
 
     public void HandleAllInput()
     {
+        // Movement
         HandleMovementInput();
-        HandleJumpInput();
-        // Handle action....etc
+        // Actions
+        HandleActionInput();
     }
 
     private void HandleMovementInput()
     {
-        // Set horizontal input variable which is read in locomotion
+        // Set horizontal input value
         horizontalInput = movementInput.x;
-        
     }
 
-    private void HandleJumpInput()
+    private void HandleActionInput()
     {
         if (jumpInput)
         {
+            // Reset jump input value
             jumpInput = false;
+            // Call handle jump in locomotion
             playerLocomotion.HandleJump();
+        }
+        if (blockPressInput)
+        {
+            // Reset block input value
+            blockPressInput = false;
+            // Call handle block press in combat
+            playerCombat.HandleBlockPress();
+        }
+        if (blockReleaseInput)
+        {
+            // Reset block release input value
+            blockReleaseInput = false;
+            // Call handle block release in combat
+            playerCombat.HandleBlockRelease();
+        }
+        if (attackInput)
+        {
+            // Reset attack input value
+            attackInput = false;
+            // Call handle attack in combat
+            playerCombat.HandleAttack();
+        }
+        if (castInput)
+        {
+            // Reset cast input value
+            castInput = false;
+            // Call handle cast in combat
+            playerCombat.HandleCast();
         }
     }
 }

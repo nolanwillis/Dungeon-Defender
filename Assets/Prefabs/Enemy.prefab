@@ -1885,7 +1885,6 @@ GameObject:
   - component: {fileID: 5840237639162470953}
   - component: {fileID: 571004855806130259}
   - component: {fileID: 6234679864884254800}
-  - component: {fileID: 7050423564708679437}
   - component: {fileID: 6234679864884254807}
   - component: {fileID: 4728351988361962325}
   - component: {fileID: 1030374685782767455}
@@ -1951,20 +1950,6 @@ CapsuleCollider:
   m_Height: 2.2
   m_Direction: 1
   m_Center: {x: 0.1, y: 1.14, z: 0.1}
---- !u!136 &7050423564708679437
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6505275509479667859}
-  m_Material: {fileID: 13400000, guid: ad0ad59e1f72a30448e1640d3dac9a76, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.7
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.1, y: 1.14, z: 0.1}
 --- !u!114 &6234679864884254807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1977,8 +1962,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f55636c5b7e0efc42b37651fd6e2ce5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerMaxHealth: 400
   healthBar: {fileID: 6234679863738194999}
+  playerMaxHealth: 4000
 --- !u!114 &4728351988361962325
 MonoBehaviour:
   m_ObjectHideFlags: 0
