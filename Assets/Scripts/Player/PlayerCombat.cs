@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
 {
-    private float attackRange;
-
     // References
     [SerializeField] LayerMask enemyLayer;
     [SerializeField] Transform attackPoint;
@@ -15,75 +13,102 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private bool isBlocking;
     [SerializeField] private bool isAttacking;
     [SerializeField] private bool isCasting;
-    [SerializeField] private bool canAttack = true;
+    [SerializeField] private bool Hit1;
+    [SerializeField] private bool Hit2;
 
     // Animator hashes
     private int isBlockingHash = Animator.StringToHash("isBlocking");
     private int isAttackingHash = Animator.StringToHash("isAttacking");
     private int isCastingHash = Animator.StringToHash("isCasting");
-    private int hitCounterHash = Animator.StringToHash("hitCounter");
 
-    // Hit counter
-    private int hitCounter = 0;
+    // Radius of hit detection sphere cast
+    private float attackRange;
 
     private void Awake()
     {
         playerAnimatorController = GetComponent<Animator>();
+        playerRigidbody = GetComponent<Rigidbody>();
     }
 
     public void HandleBlockPress()
     {
         playerAnimatorController.SetBool(isBlockingHash, true);
     }
+
     public void HandleBlockRelease()
     {
         playerAnimatorController.SetBool(isBlockingHash, false);
     }
+
     public void HandleAttack()
     {
-        if (canAttack)
+        if (!playerAnimatorController.GetBool(isAttackingHash))
         {
-            canAttack = false;
+
             attackRange = 0.5f;
             playerAnimatorController.SetBool(isAttackingHash, true);
-            StartCoroutine(DelayDetect(1.5f, 1.25f));
+            if (!Hit1 && !Hit2)
+            {
+                Hit1 = true;
+                playerAnimatorController.CrossFade("attack", 0.1f);
+            }
+            else if (Hit1 && !Hit2)
+            {
+                Hit2 = true;
+                playerAnimatorController.CrossFade("attack2", 0.1f);
+            }
+            else
+            {
+                Hit1 = false;
+                Hit2 = false;
+                playerAnimatorController.CrossFade("shieldAttack", 0.1f);
+            }
+            DetectHit(25);
         }
     }
-    
+
+    public void HandleRunningAttack()
+    {
+        if (!playerAnimatorController.GetBool(isAttackingHash))
+        {
+
+            attackRange = 0.5f;
+            playerAnimatorController.SetBool(isAttackingHash, true);
+            if (!Hit1 && !Hit2)
+            {
+                Hit1 = true;
+                playerAnimatorController.CrossFade("runningAttack", 0.1f);
+            }
+            else if (Hit1 && !Hit2)
+            {
+                Hit2 = true;
+                playerAnimatorController.CrossFade("runningAttack2", 0.1f);
+            }
+            else
+            {
+                Hit1 = false;
+                Hit2 = false;
+                playerAnimatorController.CrossFade("runningShieldAttack", 0.1f);
+            }
+            DetectHit(15);
+        }
+    }
+ 
     public void HandleCast()
     {
         attackRange = 1.5f;
         playerAnimatorController.SetBool(isCastingHash, true);
-        StartCoroutine(DelayDetect(1.5f, 1.25f));
+        DetectHit(50);
     }
 
     private void DetectHit(int damage)
     {
-        print("detect hit called");
         Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position,
             attackRange, enemyLayer);
         foreach (Collider enemy in hitEnemies)
         {
-            Debug.Log("Hit: " + enemy.name);
+            // Debug.Log("Hit: " + enemy.name);
             enemy.GetComponent<PlayerHealth>().applyDamage(damage);
-            if (hitCounter < 3)
-            {
-                hitCounter++;
-                playerAnimatorController.SetInteger(hitCounterHash, hitCounter);
-            }
-            else
-            {
-                hitCounter = 0;
-                playerAnimatorController.SetInteger(hitCounterHash, hitCounter);
-            }
         }
-    }
-
-    IEnumerator DelayDetect(float lenOfAnim, float animContSpeed)
-    {
-        float totalAnimTime = lenOfAnim * (1.0f / animContSpeed);
-        yield return new WaitForSeconds(totalAnimTime);
-        DetectHit(25);
-        canAttack = true;
     }
 }

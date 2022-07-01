@@ -10,16 +10,16 @@ public class PlayerInputManager : MonoBehaviour
     private PlayerLocomotion playerLocomotion;
     private PlayerCombat playerCombat;
 
-    // Input
     [Header("Locomotion")]
     public Vector2 movementInput;
     public float horizontalInput;
     public bool jumpInput;
-    
+
     [Header("Combat")]
     public bool blockPressInput;
     public bool blockReleaseInput;
     public bool attackInput;
+    public bool canAttack = true;
     public bool castInput;
     
     private void Awake()
@@ -89,12 +89,22 @@ public class PlayerInputManager : MonoBehaviour
             // Call handle block release in combat
             playerCombat.HandleBlockRelease();
         }
-        if (attackInput)
+        if (attackInput && canAttack && playerLocomotion.isGrounded)
         {
+            // Set can attack to false
+            canAttack = false;
             // Reset attack input value
             attackInput = false;
             // Call handle attack in combat
-            playerCombat.HandleAttack();
+            if (horizontalInput == 0)
+            {
+                playerCombat.HandleAttack();
+            } else
+            {
+                playerCombat.HandleRunningAttack();
+            }
+            // Reset can attack
+            StartCoroutine(ResetCanAttack(.75f));
         }
         if (castInput)
         {
@@ -103,5 +113,12 @@ public class PlayerInputManager : MonoBehaviour
             // Call handle cast in combat
             playerCombat.HandleCast();
         }
+    }
+
+    // Coroutine that resets the can attack flag after a given delay time
+    IEnumerator ResetCanAttack(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        canAttack = true;
     }
 }

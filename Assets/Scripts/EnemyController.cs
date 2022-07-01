@@ -124,15 +124,15 @@ public class EnemyController : MonoBehaviour
             animController.SetTrigger(attackHash);
             // Delay hit dection until after the randomly selected animation
             // Swipe animation (len = 2.667, speed = 2.0)
-            if (attackIndex == 0 || attackIndex == 1) StartCoroutine(delayDetect(2.667f, 2.0f));
+            if (attackIndex == 0 || attackIndex == 1) StartCoroutine(DelayDetect(2.667f, 2.0f));
             // Punch animation (len = 1.1, speed = 1.0)
-            if (attackIndex == 2 || attackIndex == 3) StartCoroutine(delayDetect(1.1f, 1.0f));
+            if (attackIndex == 2 || attackIndex == 3) StartCoroutine(DelayDetect(1.1f, 1.0f));
         }
     }
 
     // Calls the detectHit function after an animations total time,
     // animations total time = (length of animation) * (1/anim-state-speed)
-    IEnumerator delayDetect(float lenOfAnim, float animContSpeed)
+    IEnumerator DelayDetect(float lenOfAnim, float animContSpeed)
     {
         float totalAnimTime = lenOfAnim * (1.0f/animContSpeed);
         yield return new WaitForSeconds(totalAnimTime);
