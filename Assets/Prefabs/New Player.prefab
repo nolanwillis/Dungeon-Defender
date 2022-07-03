@@ -327,9 +327,10 @@ MonoBehaviour:
   movementInput: {x: 0, y: 0}
   horizontalInput: 0
   jumpInput: 0
-  crouchInput: 0
-  blockInput: 0
+  blockPressInput: 0
+  blockReleaseInput: 0
   attackInput: 0
+  canAttack: 1
   castInput: 0
 --- !u!114 &-7429101276938917334
 MonoBehaviour:
@@ -422,6 +423,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   attackPoint: {fileID: 6835638197987344833}
+  isBlocking: 0
+  isAttacking: 0
+  isCasting: 0
+  Hit1: 0
+  Hit2: 0
 --- !u!114 &-2614847975852635223
 MonoBehaviour:
   m_ObjectHideFlags: 0

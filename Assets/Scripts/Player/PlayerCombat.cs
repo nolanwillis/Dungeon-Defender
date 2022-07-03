@@ -27,7 +27,7 @@ public class PlayerCombat : MonoBehaviour
     private void Awake()
     {
         playerAnimatorController = GetComponent<Animator>();
-        playerRigidbody = GetComponent<Rigidbody>();
+        
     }
 
     public void HandleBlockPress()
