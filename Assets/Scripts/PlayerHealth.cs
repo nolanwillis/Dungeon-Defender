@@ -7,8 +7,9 @@ public class PlayerHealth : MonoBehaviour
     // References
     public HealthBar healthBar;
     private Animator animatorController;
+    private AudioManager audioManager;
     
-    // Max health player can have
+    // Max player health
     [SerializeField] private int playerMaxHealth = 100;
     // Current player health
     private int playerHealth;
@@ -16,10 +17,11 @@ public class PlayerHealth : MonoBehaviour
     // Animator hashes
     int isBlockingHash = Animator.StringToHash("isBlocking");
 
-    private void Awake()
+    private void Start()
     {
         // Set references
         animatorController = GetComponent<Animator>();
+        audioManager = FindObjectOfType<AudioManager>();
         // Set current health to max health
         playerHealth = playerMaxHealth;
         // Set max health of player
@@ -29,26 +31,42 @@ public class PlayerHealth : MonoBehaviour
 
     public void applyDamage(int amount)
     {
-        if (playerHealth - amount >= 0)
+        // Apply damage differently if entity being damaged is the player
+        if (gameObject.CompareTag("Player"))
         {
-            playerHealth -= amount;
-            if (gameObject.CompareTag("Player")){
-                if (animatorController.GetBool(isBlockingHash))
+            // If player is currently blocking
+            if (animatorController.GetBool(isBlockingHash))
+            {
+                animatorController.CrossFade("blockedImpact", 0.1f);
+            }
+            else
+            {
+                if (playerHealth - amount > 0)
                 {
-                    animatorController.CrossFade("blockedImpact", 0.1f);
+                    playerHealth -= amount;
                 }
                 else
                 {
-                    animatorController.CrossFade("unblockedImpact", 0.1f);
+                    // Set health to 0
+                    playerHealth = 0;
+                    // Play death animation
+                    animatorController.CrossFade("death", 0.1f);
                 }
             }
-            // If not player, play impact animation for enemy
         }
         else
         {
-            playerHealth = 0;
-            animatorController.CrossFade("death", 0.1f);
-            StartCoroutine(DelayDestroy(1.0f));
+            if (playerHealth - amount > 0)
+            {
+                playerHealth -= amount;
+            }
+            else
+            {
+                // Set health to 0
+                playerHealth = 0;
+                // Play death animation
+                animatorController.CrossFade("death", 0.1f);
+            }
         }
         healthBar.setHealth(playerHealth);
     }
@@ -66,24 +84,4 @@ public class PlayerHealth : MonoBehaviour
         } 
     }
 
-    IEnumerator DelayDestroy(float delayTime)
-    {
-        yield return new WaitForSeconds(delayTime);
-        Destroy(gameObject);
-        if (gameObject.CompareTag("Player"))
-        {
-            // Spawn new player
-            LevelManager.instance.spawnPlayer();
-            // Decrement lives count
-            GameObject.FindGameObjectWithTag("LivesUI").
-                GetComponent<LivesCounter>().DecrementLives();
-        }
-        else
-        {
-            // If tag != "Player" then PlayerHealth component must be
-            // attached to enemy. So increase player score by 100.
-            GameObject.FindGameObjectWithTag("ScoreUI").
-                 GetComponent<ScoreCounter>().IncreaseScore(100);
-        }
-    }
 }

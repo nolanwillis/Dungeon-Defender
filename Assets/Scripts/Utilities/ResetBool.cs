@@ -13,6 +13,4 @@ public class ResetBool : StateMachineBehaviour
     {
         animator.SetBool(enterParam1, enterParam1Status);
     }
-
-    
 }

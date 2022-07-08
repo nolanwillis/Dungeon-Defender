@@ -8,8 +8,9 @@ public class PlayerManager : MonoBehaviour
     PlayerInputManager playerInputManager;
     PlayerLocomotion playerLocomotion;
 
-    // Animation interacting state
-    public bool isInteracting;
+    [Header("Flags")]
+    public bool isDead = false;
+
     private void Awake()
     {
         // Set component references
@@ -20,14 +21,19 @@ public class PlayerManager : MonoBehaviour
 
     private void Update()
     {
-        // Handle all input from player
-        playerInputManager.HandleAllInput();
+        if (!isDead)
+        {
+            // Handle all input from player
+            playerInputManager.HandleAllInput();
+        }
     }
 
     private void FixedUpdate()
     {
-        // Handle everything related to player movement
-        playerLocomotion.HandleAllMovement();
+        if (!isDead)
+        {
+            // Handle everything related to player movement
+            playerLocomotion.HandleAllMovement();
+        }
     }
-
 }

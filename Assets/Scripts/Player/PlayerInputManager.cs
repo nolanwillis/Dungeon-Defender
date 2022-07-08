@@ -9,22 +9,24 @@ public class PlayerInputManager : MonoBehaviour
     [SerializeField] private PlayerInput playerInput;
     private PlayerLocomotion playerLocomotion;
     private PlayerCombat playerCombat;
+    private PlayerManager playerManager;
 
     [Header("Locomotion")]
     public Vector2 movementInput;
     public float horizontalInput;
     public bool jumpInput;
+    public bool canMove = true;
 
     [Header("Combat")]
     public bool blockPressInput;
     public bool blockReleaseInput;
     public bool attackInput;
     public bool canAttack = true;
-    public bool castInput;
     
     private void Awake()
     {
         // Set references
+        playerManager = GetComponent<PlayerManager>();
         playerLocomotion = GetComponent<PlayerLocomotion>();
         playerCombat = GetComponent<PlayerCombat>();
     }
@@ -41,7 +43,6 @@ public class PlayerInputManager : MonoBehaviour
             playerInput.PlayerActions.BlockPress.performed += i => blockPressInput = true;
             playerInput.PlayerActions.BlockRelease.performed += i => blockReleaseInput = true;
             playerInput.PlayerActions.Attack.performed += i => attackInput = true;
-            playerInput.PlayerActions.Cast.performed += i => castInput = true;
         }
         // Enable the player input object
         playerInput.Enable();
@@ -54,8 +55,11 @@ public class PlayerInputManager : MonoBehaviour
 
     public void HandleAllInput()
     {
-        // Movement
-        HandleMovementInput();
+        if (canMove)
+        {
+            // Movement
+            HandleMovementInput();
+        }
         // Actions
         HandleActionInput();
     }
@@ -79,6 +83,8 @@ public class PlayerInputManager : MonoBehaviour
         {
             // Reset block input value
             blockPressInput = false;
+            // Set can move to false
+            canMove = false;
             // Call handle block press in combat
             playerCombat.HandleBlockPress();
         }
@@ -86,6 +92,8 @@ public class PlayerInputManager : MonoBehaviour
         {
             // Reset block release input value
             blockReleaseInput = false;
+            // Set can move to true;
+            canMove = true;
             // Call handle block release in combat
             playerCombat.HandleBlockRelease();
         }
@@ -105,13 +113,6 @@ public class PlayerInputManager : MonoBehaviour
             }
             // Reset can attack
             StartCoroutine(ResetCanAttack(.75f));
-        }
-        if (castInput)
-        {
-            // Reset cast input value
-            castInput = false;
-            // Call handle cast in combat
-            playerCombat.HandleCast();
         }
     }
 

@@ -327,6 +327,7 @@ MonoBehaviour:
   movementInput: {x: 0, y: 0}
   horizontalInput: 0
   jumpInput: 0
+  canMove: 1
   blockPressInput: 0
   blockReleaseInput: 0
   attackInput: 0
@@ -344,7 +345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 931efe2b047389747a58b00de767212e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isInteracting: 0
+  isDead: 0
 --- !u!114 &-7677690152377981864
 MonoBehaviour:
   m_ObjectHideFlags: 0

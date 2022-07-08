@@ -7,27 +7,27 @@ public class PlayerCombat : MonoBehaviour
     // References
     [SerializeField] LayerMask enemyLayer;
     [SerializeField] Transform attackPoint;
+    private AudioManager audioManager;
     private Animator playerAnimatorController;
 
     [Header("Combat Flags")]
     [SerializeField] private bool isBlocking;
     [SerializeField] private bool isAttacking;
-    [SerializeField] private bool isCasting;
     [SerializeField] private bool Hit1;
     [SerializeField] private bool Hit2;
 
     // Animator hashes
     private int isBlockingHash = Animator.StringToHash("isBlocking");
     private int isAttackingHash = Animator.StringToHash("isAttacking");
-    private int isCastingHash = Animator.StringToHash("isCasting");
 
     // Radius of hit detection sphere cast
     private float attackRange;
 
     private void Awake()
     {
+        // Set references
         playerAnimatorController = GetComponent<Animator>();
-        
+        audioManager = FindObjectOfType<AudioManager>();
     }
 
     public void HandleBlockPress()
@@ -44,9 +44,11 @@ public class PlayerCombat : MonoBehaviour
     {
         if (!playerAnimatorController.GetBool(isAttackingHash))
         {
-
+            // Set global attack range variable
             attackRange = 0.5f;
+            // Set is attacking parameter in the player animator controller to true
             playerAnimatorController.SetBool(isAttackingHash, true);
+            
             if (!Hit1 && !Hit2)
             {
                 Hit1 = true;
@@ -93,13 +95,6 @@ public class PlayerCombat : MonoBehaviour
             DetectHit(15);
         }
     }
- 
-    public void HandleCast()
-    {
-        attackRange = 1.5f;
-        playerAnimatorController.SetBool(isCastingHash, true);
-        DetectHit(50);
-    }
 
     private void DetectHit(int damage)
     {
@@ -107,8 +102,10 @@ public class PlayerCombat : MonoBehaviour
             attackRange, enemyLayer);
         foreach (Collider enemy in hitEnemies)
         {
-            // Debug.Log("Hit: " + enemy.name);
+            // Apply damage to enemy
             enemy.GetComponent<PlayerHealth>().applyDamage(damage);
+            // Play sword hit sound
+            audioManager.Play("fleshHit");
         }
     }
 }

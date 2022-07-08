@@ -9,7 +9,6 @@ public class LevelManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject enemyPrefab;
-
     private SpawnPointManager spawnPointManager; 
 
     private void Awake()
