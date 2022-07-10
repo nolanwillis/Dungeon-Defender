@@ -11,8 +11,6 @@ public class PlayerCombat : MonoBehaviour
     private Animator playerAnimatorController;
 
     [Header("Combat Flags")]
-    [SerializeField] private bool isBlocking;
-    [SerializeField] private bool isAttacking;
     [SerializeField] private bool Hit1;
     [SerializeField] private bool Hit2;
 
@@ -42,8 +40,7 @@ public class PlayerCombat : MonoBehaviour
 
     public void HandleAttack()
     {
-        if (!playerAnimatorController.GetBool(isAttackingHash))
-        {
+       
             // Set global attack range variable
             attackRange = 0.5f;
             // Set is attacking parameter in the player animator controller to true
@@ -66,16 +63,13 @@ public class PlayerCombat : MonoBehaviour
                 playerAnimatorController.CrossFade("shieldAttack", 0.1f);
             }
             DetectHit(25);
-        }
+        
     }
 
     public void HandleRunningAttack()
     {
-        if (!playerAnimatorController.GetBool(isAttackingHash))
-        {
-
-            attackRange = 0.5f;
-            playerAnimatorController.SetBool(isAttackingHash, true);
+        attackRange = 0.5f;
+        playerAnimatorController.SetBool(isAttackingHash, true);
             if (!Hit1 && !Hit2)
             {
                 Hit1 = true;
@@ -93,7 +87,7 @@ public class PlayerCombat : MonoBehaviour
                 playerAnimatorController.CrossFade("runningShieldAttack", 0.1f);
             }
             DetectHit(15);
-        }
+        
     }
 
     private void DetectHit(int damage)
@@ -103,7 +97,7 @@ public class PlayerCombat : MonoBehaviour
         foreach (Collider enemy in hitEnemies)
         {
             // Apply damage to enemy
-            enemy.GetComponent<PlayerHealth>().applyDamage(damage);
+            enemy.GetComponent<PlayerHealth>().ApplyDamage(damage);
             // Play sword hit sound
             audioManager.Play("fleshHit");
         }

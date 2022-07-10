@@ -12,7 +12,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private LayerMask playerLayer;
 
     // Animation
-    private Animator animController;
+    private Animator animatorController;
     private int velocityHash = Animator.StringToHash("Velocity");
     private int attackHash = Animator.StringToHash("Attack");
     private int attackValHash = Animator.StringToHash("attackVal");
@@ -38,7 +38,7 @@ public class EnemyController : MonoBehaviour
     {
         // Set references
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        animController = GetComponent<Animator>();
+        animatorController = GetComponent<Animator>();
         audioManager = FindObjectOfType<AudioManager>();
     }
 
@@ -53,7 +53,7 @@ public class EnemyController : MonoBehaviour
             playerLayer);
         // Set velocity in the enemyAnimationController
         velocity = Mathf.Abs(agent.velocity.magnitude);
-        animController.SetFloat(velocityHash, velocity);
+        animatorController.SetFloat(velocityHash, velocity);
         // Depending on sight/attack range set current state
         if (!playerInSightRange && !playerInAttackRange) Search();
         if (playerInSightRange && !playerInAttackRange) Follow();
@@ -93,21 +93,22 @@ public class EnemyController : MonoBehaviour
 
     public void DetectHit()
     {
-        //print("Detect hit fired");
+        print("Detect hit fired");
         // Detect if enemies (player) is hit
         Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position,
             hitDetectRange, playerLayer);
         foreach (Collider enemy in hitEnemies)
         {
-            enemy.GetComponent<PlayerHealth>().applyDamage(damage);
-            if (enemy.CompareTag("Player"))
+            Animator playerAnimatorController = enemy.GetComponent<Animator>();
+            if (playerAnimatorController.GetBool(playerIsBlockingHash))
             {
-                // If the enemy detected is the player and isn't blocking,
-                // play the punch impact sound
-                if (!enemy.GetComponent<Animator>().GetBool(playerIsBlockingHash))
-                {
-                    audioManager.Play("punchImpact");
-                }
+                playerAnimatorController.CrossFade("blockedImpact", 0.1f);
+                audioManager.Play("shieldHit");
+            }
+            else
+            {
+                enemy.GetComponent<PlayerHealth>().ApplyDamage(damage);
+                audioManager.Play("punchImpact");
             }
         }
     }
@@ -124,18 +125,32 @@ public class EnemyController : MonoBehaviour
             // Get a random attack animation index
             int attackIndex = Random.Range(0, 4);
             // Set random attack animation
-            animController.SetInteger(attackValHash, attackIndex);
+            animatorController.SetInteger(attackValHash, attackIndex);
             // Trigger attack animation
-            animController.SetTrigger(attackHash);
+            animatorController.SetTrigger(attackHash);
             // Reset can attack 
             StartCoroutine(ResetCanAttack(2.25f));
         }
     }
 
-    // Coroutine that resets the can attack flag after a given delay time
+    // Coroutine that resets the can attack flag after a given delay time.
     IEnumerator ResetCanAttack(float delayTime)
     {
         yield return new WaitForSeconds(delayTime);
         canAttack = true;
+    }
+
+    // Function that calls delay detect, required so delay detect hit can be called
+    // from the detect hit state machine behaviour script.
+    public void StartDelayDetectHit(float delayTime)
+    {
+        StartCoroutine(DelayDetectHit(delayTime));
+    }
+
+    // Corouting that waits to fire detect hit just before the end of an attack animation.
+    IEnumerator DelayDetectHit(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        DetectHit();
     }
 }

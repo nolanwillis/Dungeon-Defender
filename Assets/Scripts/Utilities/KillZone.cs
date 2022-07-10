@@ -8,7 +8,7 @@ public class KillZone : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            other.gameObject.GetComponent<PlayerHealth>().applyDamage(1000);
+            other.gameObject.GetComponent<PlayerHealth>().ApplyDamage(1000);
         }
     }
 }

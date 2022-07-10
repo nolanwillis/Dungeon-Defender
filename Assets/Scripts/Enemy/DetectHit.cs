@@ -10,6 +10,6 @@ public class DetectHit : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         enemyController = animator.gameObject.GetComponent<EnemyController>();
-        enemyController.DetectHit();
+        enemyController.StartDelayDetectHit(0.5f);
     }
 }

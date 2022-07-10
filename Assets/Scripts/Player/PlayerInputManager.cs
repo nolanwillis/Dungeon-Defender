@@ -9,7 +9,6 @@ public class PlayerInputManager : MonoBehaviour
     [SerializeField] private PlayerInput playerInput;
     private PlayerLocomotion playerLocomotion;
     private PlayerCombat playerCombat;
-    private PlayerManager playerManager;
 
     [Header("Locomotion")]
     public Vector2 movementInput;
@@ -22,11 +21,11 @@ public class PlayerInputManager : MonoBehaviour
     public bool blockReleaseInput;
     public bool attackInput;
     public bool canAttack = true;
+    public bool canBlock = true;
     
     private void Awake()
     {
         // Set references
-        playerManager = GetComponent<PlayerManager>();
         playerLocomotion = GetComponent<PlayerLocomotion>();
         playerCombat = GetComponent<PlayerCombat>();
     }
@@ -68,6 +67,14 @@ public class PlayerInputManager : MonoBehaviour
     {
         // Set horizontal input value
         horizontalInput = movementInput.x;
+        if (horizontalInput != 0)
+        {
+            canBlock = false;
+        } 
+        else
+        {
+            canBlock = true;
+        }
     }
 
     private void HandleActionInput()
@@ -79,16 +86,17 @@ public class PlayerInputManager : MonoBehaviour
             // Call handle jump in locomotion
             playerLocomotion.HandleJump();
         }
-        if (blockPressInput)
+        if (blockPressInput && canBlock)
         {
-            // Reset block input value
-            blockPressInput = false;
-            // Set can move to false
-            canMove = false;
-            // Call handle block press in combat
-            playerCombat.HandleBlockPress();
+                // Reset block input value
+                blockPressInput = false;
+                // Set can move to false
+                canMove = false;
+                // Call handle block press in combat
+                playerCombat.HandleBlockPress();
+            
         }
-        if (blockReleaseInput)
+        if (blockReleaseInput && canBlock)
         {
             // Reset block release input value
             blockReleaseInput = false;
@@ -97,7 +105,9 @@ public class PlayerInputManager : MonoBehaviour
             // Call handle block release in combat
             playerCombat.HandleBlockRelease();
         }
-        if (attackInput && canAttack && playerLocomotion.isGrounded)
+        if (attackInput 
+            && canAttack 
+            && playerLocomotion.isGrounded)
         {
             // Set can attack to false
             canAttack = false;
