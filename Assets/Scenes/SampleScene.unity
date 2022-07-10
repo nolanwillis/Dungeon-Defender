@@ -7439,6 +7439,26 @@ MonoBehaviour:
     volume: 0.4
     pitch: 1
     source: {fileID: 0}
+  - name: playerDeath
+    clip: {fileID: 8300000, guid: 540f8bbf069dbd64a8fc0ea100174991, type: 3}
+    volume: 0.6
+    pitch: 1
+    source: {fileID: 0}
+  - name: enemyDeath
+    clip: {fileID: 8300000, guid: f210914967bf2b948b32c65776b8c088, type: 3}
+    volume: 0.6
+    pitch: 1
+    source: {fileID: 0}
+  - name: playerLanding
+    clip: {fileID: 8300000, guid: d1609a303580403429d002579bb7b802, type: 3}
+    volume: 1
+    pitch: 1.5
+    source: {fileID: 0}
+  - name: playerPain
+    clip: {fileID: 8300000, guid: 87b969525afff1e4c93549348619d3ca, type: 3}
+    volume: 0.6
+    pitch: 1
+    source: {fileID: 0}
 --- !u!4 &1722571397
 Transform:
   m_ObjectHideFlags: 0

@@ -109,6 +109,7 @@ public class EnemyController : MonoBehaviour
             {
                 enemy.GetComponent<PlayerHealth>().ApplyDamage(damage);
                 audioManager.Play("punchImpact");
+                audioManager.Play("playerPain");
             }
         }
     }
