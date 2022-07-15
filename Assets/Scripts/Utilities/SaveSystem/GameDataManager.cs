@@ -5,24 +5,20 @@ using System.Linq;
 
 public class GameDataManager : MonoBehaviour
 {
+    // Make class a single instance
+    public static GameDataManager instance { get; private set; }
+    
+    // References
+    private GameData gameData;
+    private DataFileHandler dataHandler;
+    private Score playerScoreHandler;
+
     [Header("File Storage Config")]
     // Name of data file
     [SerializeField] private string fileName;
     // Encryption toggle
     [SerializeField] private bool useEncryption;
-    // Reference to gameData object
-    private GameData gameData;
-    // Reference to LivesCounter gameObject
-    public LivesCounter livesCounter;
-    // Reference to ScoreCounter gameObject;
-    public ScoreCounter scoreCounter;
-    private List<ISaveSystem> saveSystemObjects;
     
-    // Reference to DataFileHandler script 
-    private DataFileHandler dataHandler;
-    public static GameDataManager instance { get; private set; }
-    
-
     private void Awake()
     {
         if (instance != null)
@@ -30,25 +26,16 @@ public class GameDataManager : MonoBehaviour
             Debug.LogError("More than one Game Data Manager found!");
         }
         instance = this;
+
+        playerScoreHandler = GameObject.FindGameObjectWithTag("ScoreUI")
+            .GetComponent<Score>();
     }
 
     private void Start()
     {
         dataHandler = new DataFileHandler(Application.persistentDataPath, fileName,
             useEncryption);
-        //saveSystemObjects = FindAllSaveSystemObjects();
         LoadGame();
-    }
-
-    // NOT WORKING: saveSystemObjects should be of length 1 not 0
-    private List<ISaveSystem> FindAllSaveSystemObjects()
-    {
-        // Create a list of all scripts that implement ISaveSystem and extend
-        // MonoBehavior.
-        IEnumerable<ISaveSystem> saveSystemObjects = FindObjectsOfType<MonoBehaviour>()
-            .OfType<ISaveSystem>();
-        
-        return new List<ISaveSystem>(saveSystemObjects);
     }
 
     public void NewGame()
@@ -66,25 +53,16 @@ public class GameDataManager : MonoBehaviour
             Debug.Log("No game to load. Creating new game...");
             NewGame();
         }
-        //print("saveSystemObjects List Length: " + saveSystemObjects.Count);
-        //// Load data in each script that implements ISaveSystem
-        //foreach (ISaveSystem saveSystemObj in saveSystemObjects)
-        //{
-        //    saveSystemObj.LoadData(gameData);
-        //}
-        livesCounter.GetComponent<LivesCounter>().LoadData(gameData);
-        scoreCounter.GetComponent<ScoreCounter>().LoadData(gameData);
+
+        // Call load data in all scripts that load data
+        playerScoreHandler.LoadData(gameData);
     }
 
     public void SaveGame()
     {
-        //// Save data in each script that implements ISaveSystem
-        //foreach (ISaveSystem saveSystemObj in saveSystemObjects)
-        //{
-        //    saveSystemObj.SaveData(gameData);
-        //}
-        livesCounter.GetComponent<LivesCounter>().SaveData(gameData);
-        scoreCounter.GetComponent <ScoreCounter>().SaveData(gameData);
+        // Call save method in all scripts that save data
+        playerScoreHandler.SaveData(gameData);
+
         // Save data to a file using data file handler
         dataHandler.Save(gameData);
     }

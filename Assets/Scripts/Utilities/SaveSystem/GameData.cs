@@ -5,13 +5,11 @@ using UnityEngine;
 [System.Serializable]
 public class GameData 
 {
-    public int lives;
-    public int score;
+    public int highScore;
 
     // Constructor, defines default data when there's no data to load
     public GameData()
     {
-        lives = 3;
-        score = 0;
+        highScore = 0;
     }
 }

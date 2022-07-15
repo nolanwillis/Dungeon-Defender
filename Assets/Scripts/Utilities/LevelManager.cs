@@ -20,12 +20,12 @@ public class LevelManager : MonoBehaviour
     {
         // Set reference to spawn point manager component
         spawnPointManager = GameObject.Find("SpawnPoints").GetComponent<SpawnPointManager>();
-        spawnPlayer();
-        spawnEnemy();
+        SpawnPlayer();
+        SpawnEnemy();
     }
 
     // Instantiates New Player prefab
-    public void spawnPlayer()
+    public void SpawnPlayer()
     {
         // Spawn point index player will use
         int spawnPointIndex = spawnPointManager.GetSpawnPoint();
@@ -40,6 +40,8 @@ public class LevelManager : MonoBehaviour
         PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
         // Reference to the metadata component of the player
         Metadata metaData = player.GetComponent<Metadata>();
+        // Reference to score component of the score counter
+        Score playerScoreHandler = GameObject.FindGameObjectWithTag("ScoreUI").GetComponent<Score>();
         // Set player health component, health bar, to health bar component
         if (playerHealth != null && healthBar != null)
         {
@@ -55,10 +57,12 @@ public class LevelManager : MonoBehaviour
         {
             metaData.spawnPoint = spawnPointIndex;
         }
+        // Reset score in player score handler
+        playerScoreHandler.score = 0;
     }
 
     // Instantiates Enemy prefab
-    public void spawnEnemy()
+    public void SpawnEnemy()
     {
         // Spawn point index enemy will use
         int spawnPointIndex = spawnPointManager.GetSpawnPoint();
@@ -84,5 +88,3 @@ public class LevelManager : MonoBehaviour
         }
     }
 }
-
-

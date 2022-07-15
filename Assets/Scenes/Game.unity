@@ -1024,8 +1024,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fileName: data.json
   useEncryption: 0
-  livesCounter: {fileID: 1777041115}
-  scoreCounter: {fileID: 193348311}
 --- !u!4 &150983807
 Transform:
   m_ObjectHideFlags: 0
@@ -1432,7 +1430,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Score: 1000'
+  m_Text: 'Score: 0'
 --- !u!222 &193348310
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1450,10 +1448,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 193348307}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e655ef7721d51054d9bfafb4bee856b5, type: 3}
+  m_Script: {fileID: 11500000, guid: 510faf81d3f7f7f4cafd494ab88ea369, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreCounter: {fileID: 193348309}
+  highScore: 0
+  score: 0
 --- !u!1001 &194782375
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7416,7 +7415,7 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: fleshHit
     clip: {fileID: 8300000, guid: d4a85d14b45ba11479cec147618f8944, type: 3}
-    volume: 0.4
+    volume: 0.2
     pitch: 1
     source: {fileID: 0}
   - name: shieldSwing
@@ -7431,7 +7430,7 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: punchImpact
     clip: {fileID: 8300000, guid: 053f40fc818af1344a727483ad70ac07, type: 3}
-    volume: 0.3
+    volume: 0.2
     pitch: 0.63
     source: {fileID: 0}
   - name: dungeonAmb
@@ -7451,12 +7450,12 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: playerLanding
     clip: {fileID: 8300000, guid: d1609a303580403429d002579bb7b802, type: 3}
-    volume: 1
-    pitch: 1.5
+    volume: 0.1
+    pitch: 0.69
     source: {fileID: 0}
   - name: playerPain
     clip: {fileID: 8300000, guid: 87b969525afff1e4c93549348619d3ca, type: 3}
-    volume: 0.6
+    volume: 0.4
     pitch: 1
     source: {fileID: 0}
 --- !u!4 &1722571397
@@ -7973,10 +7972,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1777041111}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4aebeb53b1c1ada4e9e06c0eb57174ce, type: 3}
+  m_Script: {fileID: 11500000, guid: bcb1ce69852ea4f49968af00f7be7912, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  livesCounter: {fileID: 1777041113}
+  playerLives: 0
 --- !u!1001 &1795508946
 PrefabInstance:
   m_ObjectHideFlags: 0

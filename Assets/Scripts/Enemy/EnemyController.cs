@@ -93,7 +93,6 @@ public class EnemyController : MonoBehaviour
 
     public void DetectHit()
     {
-        print("Detect hit fired");
         // Detect if enemies (player) is hit
         Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position,
             hitDetectRange, playerLayer);
@@ -147,7 +146,7 @@ public class EnemyController : MonoBehaviour
     {
         StartCoroutine(DelayDetectHit(delayTime));
     }
-
+    
     // Corouting that waits to fire detect hit just before the end of an attack animation.
     IEnumerator DelayDetectHit(float delayTime)
     {
