@@ -40,8 +40,6 @@ public class LevelManager : MonoBehaviour
         PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
         // Reference to the metadata component of the player
         Metadata metaData = player.GetComponent<Metadata>();
-        // Reference to score component of the score counter
-        Score playerScoreHandler = GameObject.FindGameObjectWithTag("ScoreUI").GetComponent<Score>();
         // Set player health component, health bar, to health bar component
         if (playerHealth != null && healthBar != null)
         {
@@ -57,8 +55,7 @@ public class LevelManager : MonoBehaviour
         {
             metaData.spawnPoint = spawnPointIndex;
         }
-        // Reset score in player score handler
-        playerScoreHandler.score = 0;
+        
     }
 
     // Instantiates Enemy prefab

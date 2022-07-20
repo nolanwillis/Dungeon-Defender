@@ -8,11 +8,13 @@ public class Score : MonoBehaviour, ISaveSystem
     // References
     private Text scoreCounter;
     
-    public int highScore = 0;
-    public int score = 0;
+    // Must be public static so data can be accessed across scenes
+    public static int highScore = 0;
+    public static int score;
 
     private void Awake()
     {
+        score = 0;
         scoreCounter = GetComponent<Text>();
     }
     
@@ -20,7 +22,6 @@ public class Score : MonoBehaviour, ISaveSystem
     public void ChangeScore(int amount)
     {
         score += amount;
-        print(score);
         scoreCounter.text = "Score: " + score;
         if (score > highScore)
         {
@@ -29,6 +30,6 @@ public class Score : MonoBehaviour, ISaveSystem
     }
 
     // Save system functions
-    public void LoadData(GameData data) { score = data.highScore; }
-    public void SaveData(GameData data) { data.highScore = score; }
+    public void LoadData(GameData data) { highScore = data.highScore; }
+    public void SaveData(GameData data) { data.highScore = highScore; }
 }

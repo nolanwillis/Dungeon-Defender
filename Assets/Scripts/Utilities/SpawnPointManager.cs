@@ -6,10 +6,10 @@ public class SpawnPointManager : MonoBehaviour
 {
     // Location of spawn point
     public Transform[] spawnPoints;
-    // Array that keeps track of which spawn points are in use
+    // Array that keeps track of which spawn points are in use (false if not in use)
     public bool[] openSpawns;
     // Integer that keeps track of how many spawn points are left
-    private int numOpenSpawns;
+    public int numOpenSpawns;
 
     // Start is called before the first frame update
     private void Start()

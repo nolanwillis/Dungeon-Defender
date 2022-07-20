@@ -5,11 +5,12 @@ using UnityEngine.UI;
 
 public class Lives : MonoBehaviour
 {
-    public int playerLives = 3;
+    public int playerLives;
     private Text livesCounter;
 
     private void Awake()
     {
+        playerLives = 3;
         livesCounter = GetComponent<Text>();
     }
 

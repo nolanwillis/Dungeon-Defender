@@ -128,8 +128,8 @@ public class EnemyController : MonoBehaviour
             animatorController.SetInteger(attackValHash, attackIndex);
             // Trigger attack animation
             animatorController.SetTrigger(attackHash);
-            // Reset can attack 
-            StartCoroutine(ResetCanAttack(2.25f));
+            // Reset can attack after a random time between 1.5 and 2.5 seconds
+            StartCoroutine(ResetCanAttack(Random.Range(1.5f, 2.5f)));
         }
     }
 
@@ -147,7 +147,8 @@ public class EnemyController : MonoBehaviour
         StartCoroutine(DelayDetectHit(delayTime));
     }
     
-    // Corouting that waits to fire detect hit just before the end of an attack animation.
+    // Corouting that waits to fire detect hit just before the end of an attack
+    // animation.
     IEnumerator DelayDetectHit(float delayTime)
     {
         yield return new WaitForSeconds(delayTime);
