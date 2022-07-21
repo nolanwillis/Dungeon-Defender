@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerLocomotion : MonoBehaviour
 {
-    // All handler functions related to locomotion(jumping, falling, landing, rotating, moving)
     // References
     private PlayerManager playerManager;
     private Animator playerAnimatorController;
@@ -57,7 +56,6 @@ public class PlayerLocomotion : MonoBehaviour
         HandleRotation();
     }
 
-    // Movement functions
     private void HandleLateralMovement()
     {
         // Calculate player's target velocity 
@@ -74,7 +72,7 @@ public class PlayerLocomotion : MonoBehaviour
         // Update velocity parameter in the player animator contoller
         playerAnimatorController.SetFloat(velocityXHash, Mathf.Abs(playerInputManager.horizontalInput));
     }
-
+    
     private void HandleRotation()
     {
         // Target rotation of player
@@ -96,7 +94,7 @@ public class PlayerLocomotion : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 
             playerRotationSpeed);
     }
-
+    
     private void HandleFallingAndLanding()
     {
         // Raycast variables for ground detection 
@@ -134,8 +132,7 @@ public class PlayerLocomotion : MonoBehaviour
             }
         }
     }
-
-    // Action functions
+    
     public void HandleJump()
     {
         // Only jump if player is on ground

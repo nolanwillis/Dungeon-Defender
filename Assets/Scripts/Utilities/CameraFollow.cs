@@ -13,7 +13,7 @@ public class CameraFollow : MonoBehaviour
     // Camera velocity
     private Vector3 velocity;
 
-    // FixedUpdate, called at same rate as physics engine
+    // Updates camera position
     void LateUpdate()
     {
         Vector3 desiredPosition = target.position + offset;
@@ -21,5 +21,4 @@ public class CameraFollow : MonoBehaviour
             desiredPosition, ref velocity, smoothSpeed);
         transform.position = smoothedPosition;
     }
-
 }

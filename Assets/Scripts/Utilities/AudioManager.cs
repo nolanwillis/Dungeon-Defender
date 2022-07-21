@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-
+    // Array of available sounds in the scene
     public Sound[] sounds;
 
     void Awake()
     {
+        // For each sound in the array do the following
         foreach (Sound sound in sounds)
         {
             // Attach audio source to each sound 
@@ -22,6 +23,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    // Play method for other scripts to call
     public void Play (string name)
     {
         Sound sound = Array.Find(sounds, sound => sound.name == name);

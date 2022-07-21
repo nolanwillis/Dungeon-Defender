@@ -52,6 +52,7 @@ public class PlayerInputManager : MonoBehaviour
         playerInput.Disable();
     }
 
+    // Calls all handle input functions
     public void HandleAllInput()
     {
         if (canMove)
@@ -63,6 +64,7 @@ public class PlayerInputManager : MonoBehaviour
         HandleActionInput();
     }
 
+    // Handles input related to moving, disables blocking input while moving
     private void HandleMovementInput()
     {
         // Set horizontal input value
@@ -77,6 +79,7 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
+    // Handles all input related to actions (jumping, blocking, attacking)
     private void HandleActionInput()
     {
         if (jumpInput)

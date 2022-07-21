@@ -15,7 +15,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void Start()
     {
-        // Set references
+        // Set reference to the animator controller
         animatorController = GetComponent<Animator>();
         // Set current health to max health
         playerHealth = playerMaxHealth;

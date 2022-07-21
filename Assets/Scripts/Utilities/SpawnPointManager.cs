@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class SpawnPointManager : MonoBehaviour
 {
-    // Location of spawn point
+    // Array of spawn point transforms
     public Transform[] spawnPoints;
-    // Array that keeps track of which spawn points are in use (false if not in use)
+    // Array that keeps track of which spawn points are in use
+    // (false if not in use)
     public bool[] openSpawns;
-    // Integer that keeps track of how many spawn points are left
+    // Integer that keeps track of how many spawn points are open
     public int numOpenSpawns;
 
-    // Start is called before the first frame update
     private void Start()
     {
         // Append all spawn points in level to an array of transforms
@@ -28,7 +28,7 @@ public class SpawnPointManager : MonoBehaviour
         }
     }
 
-    // Gets the indicie of an open spawn point
+    // Gets the index of an open spawn point in the spawn points array
     public int GetSpawnPoint()
     {
         // Select random spawn point from available spawn points
@@ -51,7 +51,7 @@ public class SpawnPointManager : MonoBehaviour
         return -1;
     }
 
-    // Opens a spawn point given an index
+    // Opens a spawn point in the open spawns array
     public void OpenSpawnPoint(int index)
     {
         if (!openSpawns[index])

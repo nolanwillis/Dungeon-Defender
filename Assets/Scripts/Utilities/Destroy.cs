@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class Destroy : StateMachineBehaviour
 {
-    // Function called when animator enters animation state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         // If object being destroyed is a player disable
@@ -24,13 +23,12 @@ public class Destroy : StateMachineBehaviour
         }
     }
 
-    // Function called when animator exits animation state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         // Set reference to player lives handler
         Lives playerLivesHandler =
             GameObject.FindGameObjectWithTag("LivesUI").GetComponent<Lives>();
-        // Set reference to 
+        // Set reference to spawn point manager
         SpawnPointManager spawnPointManager =
             GameObject.Find("SpawnPoints").GetComponent<SpawnPointManager>();
         // If object being destroyed is a player
@@ -77,6 +75,7 @@ public class Destroy : StateMachineBehaviour
             // Spawn new enemy
             FindObjectOfType<LevelManager>().SpawnEnemy();
         }
+        // Finally, destroy the gameObject
         Destroy(animator.gameObject);
     }
 }

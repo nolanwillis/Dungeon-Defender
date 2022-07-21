@@ -19,6 +19,7 @@ public class EnemyController : MonoBehaviour
     private int playerIsBlockingHash = Animator.StringToHash("isBlocking");
     private float velocity = 0.0f;
 
+    // Enemy Mechanics
     [Header("Searching")]
     [SerializeField] private Vector3 walkPoint;
     private bool walkPointSet;
@@ -119,7 +120,7 @@ public class EnemyController : MonoBehaviour
         agent.SetDestination(transform.position);
         // If attacking make sure enemy is looking at player
         transform.LookAt(playerT);
-        if (canAttack)
+        if (canAttack && !playerT.gameObject.GetComponent<PlayerManager>().isDead)
         {
             canAttack = false;
             // Get a random attack animation index
@@ -133,7 +134,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    // Coroutine that resets the can attack flag after a given delay time.
+    // Coroutine that resets the can attack flag after a given delay time
     IEnumerator ResetCanAttack(float delayTime)
     {
         yield return new WaitForSeconds(delayTime);
@@ -141,14 +142,14 @@ public class EnemyController : MonoBehaviour
     }
 
     // Function that calls delay detect, required so delay detect hit can be called
-    // from the detect hit state machine behaviour script.
+    // from the detect hit state machine behaviour script
     public void StartDelayDetectHit(float delayTime)
     {
         StartCoroutine(DelayDetectHit(delayTime));
     }
     
     // Corouting that waits to fire detect hit just before the end of an attack
-    // animation.
+    // animation
     IEnumerator DelayDetectHit(float delayTime)
     {
         yield return new WaitForSeconds(delayTime);

@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class KillZone : MonoBehaviour
 {
-    void OnTriggerEnter(Collider other)
+    // Kills player when there's a collision
+    private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {

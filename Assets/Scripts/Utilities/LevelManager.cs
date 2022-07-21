@@ -21,10 +21,13 @@ public class LevelManager : MonoBehaviour
         // Set reference to spawn point manager component
         spawnPointManager = GameObject.Find("SpawnPoints").GetComponent<SpawnPointManager>();
         SpawnPlayer();
-        SpawnEnemy();
+        for (int i = 0; i < 8; i++)
+        {
+            SpawnEnemy();
+        }
     }
 
-    // Instantiates New Player prefab
+    // Instantiates new player prefab
     public void SpawnPlayer()
     {
         // Spawn point index player will use
@@ -58,7 +61,7 @@ public class LevelManager : MonoBehaviour
         
     }
 
-    // Instantiates Enemy prefab
+    // Instantiates enemy prefab
     public void SpawnEnemy()
     {
         // Spawn point index enemy will use

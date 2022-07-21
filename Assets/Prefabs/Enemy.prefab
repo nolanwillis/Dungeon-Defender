@@ -2035,7 +2035,7 @@ MonoBehaviour:
     m_Bits: 64
   walkPoint: {x: 0, y: 0, z: 0}
   walkPointRange: 11
-  damage: 5
+  damage: 25
   attackPoint: {fileID: 4791350976753871193}
   hitDetectRange: 1.5
   canAttack: 1
