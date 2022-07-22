@@ -23,7 +23,7 @@ Dungeon Defender is my first project using Unity and C#. It’s a 3D side scroll
 - Health
 - Sound
 
-### Asset Sources:
+### Asset Sources
 - Unity Asset Store: terrain, props, and sounds
 - Mixamo: character meshes and animations
 - Freesound.org: sounds
